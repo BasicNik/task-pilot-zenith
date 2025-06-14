@@ -1,5 +1,13 @@
 
 import React, { useState } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
 
 type Task = {
   id: number;
@@ -30,47 +38,52 @@ const TaskFilters: React.FC<Props> = ({ onChange, todoList }) => {
     if (priority) filter.priority = priority;
     if (tag) filter.tags = [tag];
     onChange(filter);
-  }, [status, priority, tag]);
+  }, [status, priority, tag, onChange]);
 
   return (
     <div className="flex gap-4 flex-wrap items-center mb-2">
-      <div>
-        <label className="text-sm mr-1">Status:</label>
-        <select
-          className="border rounded px-2 py-1"
-          value={status}
-          onChange={e => setStatus(e.target.value)}
-        >
-          <option value="">All</option>
-          <option value="Pending">Pending</option>
-          <option value="Completed">Completed</option>
-        </select>
+      <div className="flex items-center gap-2">
+        <Label htmlFor="status-filter">Status</Label>
+        <Select value={status} onValueChange={setStatus}>
+          <SelectTrigger id="status-filter" className="w-[180px]">
+            <SelectValue placeholder="All" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="">All</SelectItem>
+            <SelectItem value="Pending">Pending</SelectItem>
+            <SelectItem value="Completed">Completed</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
-      <div>
-        <label className="text-sm mr-1">Priority:</label>
-        <select
-          className="border rounded px-2 py-1"
-          value={priority}
-          onChange={e => setPriority(e.target.value)}
-        >
-          <option value="">All</option>
-          <option value="Low">Low</option>
-          <option value="Medium">Medium</option>
-          <option value="High">High</option>
-        </select>
+
+      <div className="flex items-center gap-2">
+        <Label htmlFor="priority-filter">Priority</Label>
+        <Select value={priority} onValueChange={setPriority}>
+          <SelectTrigger id="priority-filter" className="w-[180px]">
+            <SelectValue placeholder="All" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="">All</SelectItem>
+            <SelectItem value="Low">Low</SelectItem>
+            <SelectItem value="Medium">Medium</SelectItem>
+            <SelectItem value="High">High</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
-      <div>
-        <label className="text-sm mr-1">Tag:</label>
-        <select
-          className="border rounded px-2 py-1"
-          value={tag}
-          onChange={e => setTag(e.target.value)}
-        >
-          <option value="">All</option>
-          {tagSet.map((t) => (
-            <option value={t} key={t}>{t}</option>
-          ))}
-        </select>
+      
+      <div className="flex items-center gap-2">
+        <Label htmlFor="tag-filter">Tag</Label>
+        <Select value={tag} onValueChange={setTag}>
+          <SelectTrigger id="tag-filter" className="w-[180px]">
+            <SelectValue placeholder="All" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="">All</SelectItem>
+            {tagSet.map((t) => (
+              <SelectItem value={t} key={t}>{t}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
     </div>
   );
