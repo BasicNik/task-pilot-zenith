@@ -14,7 +14,7 @@ interface Props {
 const Navbar: React.FC<Props> = ({ active, onNav, loggedIn, onLogout, onLoginClick }) => {
   return (
     <header className="w-full bg-background/90 backdrop-blur-sm sticky top-0 z-30 flex px-4 py-2 items-center">
-      <img src="/lovable-uploads/025e180c-9d28-40fa-be7f-b8aa86c3dbce.png" alt="TaskPilot Logo" className="h-8 w-auto" />
+      <img src="/lovable-uploads/217b89ba-5dee-4e18-a30f-fb0110e23217.png" alt="TaskPilot Logo" className="h-8 w-auto" />
       <nav className="ml-12 flex gap-4 text-base font-medium">
         <Button
           variant={active === "tasks" ? "aurora-outline" : "ghost"}
