@@ -1,3 +1,4 @@
+
 import React from "react";
 import { CalendarCheck } from "lucide-react";
 import { UserDropdown } from "./UserDropdown";
@@ -20,17 +21,17 @@ const Navbar: React.FC<Props> = ({ active, onNav, loggedIn, onLogout, onLoginCli
       </span>
       <nav className="ml-12 flex gap-4 text-base font-medium">
         <Button
-          variant="aurora-outline"
+          variant={active === "tasks" ? "aurora-outline" : "ghost"}
           size="xs"
-          className={`w-28 ${active === "tasks" ? "aurora-glow" : ""}`}
+          className={`w-28 ${active === "tasks" ? "aurora-glow nav-active" : ""}`}
           onClick={() => onNav("tasks")}
         >
           Tasks
         </Button>
         <Button
-          variant="aurora-outline"
+          variant={active === "dashboard" ? "aurora-outline" : "ghost"}
           size="xs"
-          className={`w-28 ${active === "dashboard" ? "aurora-glow" : ""}`}
+          className={`w-28 ${active === "dashboard" ? "aurora-glow nav-active" : ""}`}
           onClick={() => onNav("dashboard")}
         >
           Dashboard

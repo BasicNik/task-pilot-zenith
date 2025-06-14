@@ -6,7 +6,7 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --background: 247.9 14.3% 98.4%;
     --foreground: 222.2 84% 4.9%;
 
     --card: 0 0% 100%;
@@ -246,7 +246,7 @@ body, html {
   position: relative; /* For positioning the glow effect */
   border: 3px solid transparent;
   background: 
-    linear-gradient(var(--background), var(--background)) padding-box, 
+    linear-gradient(var(--card), var(--card)) padding-box, 
     linear-gradient(90deg, #BC13FE 0%, #E025BE 25%, #F0459A 50%, #FB697A 75%, #FF8E5F 100%) border-box;
   color: var(--foreground);
 }
@@ -268,6 +268,13 @@ body, html {
   background: 
     linear-gradient(var(--clr-surface-a20), var(--clr-surface-a20)) padding-box, 
     linear-gradient(90deg, #BC13FE 0%, #E025BE 25%, #F0459A 50%, #FB697A 75%, #FF8E5F 100%) border-box;
+}
+
+.aurora-outline-btn.nav-active {
+  background: 
+    var(--aurora-gradient-2) padding-box,
+    linear-gradient(90deg, #BC13FE 0%, #E025BE 25%, #F0459A 50%, #FB697A 75%, #FF8E5F 100%) border-box;
+  color: var(--primary-foreground);
 }
 
 .aurora-outline-btn.aurora-glow::after {
