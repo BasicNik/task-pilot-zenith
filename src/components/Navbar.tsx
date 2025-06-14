@@ -1,6 +1,5 @@
 
 import React from "react";
-import { CalendarCheck } from "lucide-react";
 import { UserDropdown } from "./UserDropdown";
 import { Button } from "@/components/ui/button";
 
@@ -15,10 +14,7 @@ interface Props {
 const Navbar: React.FC<Props> = ({ active, onNav, loggedIn, onLogout, onLoginClick }) => {
   return (
     <header className="w-full bg-background/90 backdrop-blur-sm sticky top-0 z-30 flex px-4 py-2 items-center">
-      <span className="flex items-center gap-2 font-extrabold text-2xl tracking-tight text-primary">
-        <CalendarCheck size={28} className="text-primary" />
-        TaskPilot
-      </span>
+      <img src="/lovable-uploads/025e180c-9d28-40fa-be7f-b8aa86c3dbce.png" alt="TaskPilot Logo" className="h-8 w-auto" />
       <nav className="ml-12 flex gap-4 text-base font-medium">
         <Button
           variant={active === "tasks" ? "aurora-outline" : "ghost"}
