@@ -1,3 +1,4 @@
+
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
@@ -63,35 +64,3 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 Button.displayName = "Button"
 
 export { Button, buttonVariants }
-
-/*
-  Aurora outline button CSS (add to index.css):
-  .aurora-outline-btn {
-    position: relative;
-    z-index: 0;
-    border-radius: 9999px;
-    padding: 0;
-    background: none;
-    overflow: visible;
-  }
-  .aurora-outline-btn > * {
-    position: relative;
-    z-index: 1;
-    border-radius: 9999px;
-  }
-  .aurora-outline-btn::before {
-    content: "";
-    position: absolute;
-    inset: -3px;
-    border-radius: 9999px;
-    padding: 0;
-    z-index: 0;
-    background: linear-gradient(90deg, #BC13FE 0%, #E025BE 25%, #F0459A 50%, #FB697A 75%, #FF8E5F 100%);
-    -webkit-mask:
-      linear-gradient(#fff 0 0) content-box, 
-      linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    pointer-events: none;
-  }
-*/

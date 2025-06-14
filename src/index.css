@@ -236,38 +236,30 @@ body, html {
   background-clip: text;
 }
 
-/* Aurora outline button with fixed border thickness and visible text */
+/* Aurora outline button with gradient border */
 .aurora-outline-btn {
-  position: relative;
-  z-index: 0;
-  border-radius: 9999px;
-  padding: 0;
-  background: none;
-  overflow: visible;
-  display: inline-flex;
+  border: 3px solid transparent;
+  background: 
+    linear-gradient(var(--background), var(--background)) padding-box, 
+    linear-gradient(90deg, #BC13FE 0%, #E025BE 25%, #F0459A 50%, #FB697A 75%, #FF8E5F 100%) border-box;
+  color: var(--foreground);
 }
-.aurora-outline-btn > * {
-  position: relative;
-  z-index: 1;
-  border-radius: 9999px;
-  width: 100%;
-  background: #111; /* or use var(--clr-surface-a0) for dark theme */
-  color: #fff;
-  font-family: "Poppins", sans-serif;
-  font-weight: 600;
-  text-align: center;
-  transition: background 0.2s, color 0.2s;
+
+/* Ensure hover specificity is correct for both themes */
+.aurora-outline-btn:hover {
+  background: 
+    linear-gradient(var(--accent), var(--accent)) padding-box, 
+    linear-gradient(90deg, #BC13FE 0%, #E025BE 25%, #F0459A 50%, #FB697A 75%, #FF8E5F 100%) border-box;
 }
-.aurora-outline-btn > *:hover {
-  background: #222;
-  color: #fff;
+
+.dark .aurora-outline-btn {
+  background: 
+    linear-gradient(var(--clr-surface-a10), var(--clr-surface-a10)) padding-box, 
+    linear-gradient(90deg, #BC13FE 0%, #E025BE 25%, #F0459A 50%, #FB697A 75%, #FF8E5F 100%) border-box;
 }
-.aurora-outline-btn::before {
-  content: "";
-  position: absolute;
-  inset: -3px;
-  border-radius: 9999px;
-  z-index: 0;
-  background: linear-gradient(90deg, #BC13FE 0%, #E025BE 25%, #F0459A 50%, #FB697A 75%, #FF8E5F 100%);
-  pointer-events: none;
+
+.dark .aurora-outline-btn:hover {
+  background: 
+    linear-gradient(var(--clr-surface-a20), var(--clr-surface-a20)) padding-box, 
+    linear-gradient(90deg, #BC13FE 0%, #E025BE 25%, #F0459A 50%, #FB697A 75%, #FF8E5F 100%) border-box;
 }
