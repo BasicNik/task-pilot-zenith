@@ -234,7 +234,7 @@ const Auth: React.FC<AuthProps> = ({ onSuccess }) => {
                   )}
                 </div>
 
-                <Button type="submit" className="w-full" disabled={loading}>
+                <Button type="submit" variant="aurora-outline" size="lg" className="w-full" disabled={loading}>
                   {loading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />

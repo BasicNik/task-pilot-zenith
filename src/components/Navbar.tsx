@@ -1,6 +1,7 @@
 import React from "react";
-import { CalendarCheck, User } from "lucide-react";
-import { CustomUser } from "../hooks/useAuth";
+import { CalendarCheck } from "lucide-react";
+import { UserDropdown } from "./UserDropdown";
+import { Button } from "@/components/ui/button";
 
 interface Props {
   active: "tasks" | "dashboard" | "login";
@@ -8,61 +9,45 @@ interface Props {
   loggedIn: boolean;
   onLogout: () => void;
   onLoginClick: () => void;
-  user?: CustomUser | null;
 }
 
-const Navbar: React.FC<Props> = ({ active, onNav, loggedIn, onLogout, onLoginClick, user }) => {
+const Navbar: React.FC<Props> = ({ active, onNav, loggedIn, onLogout, onLoginClick }) => {
   return (
-    <header className="w-full border-b bg-white/90 sticky top-0 z-30 flex px-4 py-2 items-center shadow-sm">
+    <header className="w-full border-b bg-background/90 backdrop-blur-sm sticky top-0 z-30 flex px-4 py-2 items-center shadow-sm">
       <span className="flex items-center gap-2 font-extrabold text-2xl tracking-tight text-primary">
         <CalendarCheck size={28} className="text-primary" />
         TaskPilot
       </span>
       <nav className="ml-12 flex gap-4 text-base font-medium">
-        <button
-          className={`px-3 py-1 rounded ${active === "tasks" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover-scale"}`}
+        <Button
+          variant="aurora-outline"
+          size="lg"
+          className={`min-w-[120px] ${active === "tasks" ? "opacity-100" : "opacity-70"}`}
           onClick={() => onNav("tasks")}
         >
           Tasks
-        </button>
-        <button
-          className={`px-3 py-1 rounded ${active === "dashboard" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover-scale"}`}
+        </Button>
+        <Button
+          variant="aurora-outline"
+          size="lg"
+          className={`min-w-[120px] ${active === "dashboard" ? "opacity-100" : "opacity-70"}`}
           onClick={() => onNav("dashboard")}
         >
           Dashboard
-        </button>
+        </Button>
       </nav>
       <div className="ml-auto flex items-center gap-3">
-        {loggedIn && user && (
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <User className="h-4 w-4" />
-            <span className="font-medium text-foreground">{user.username}</span>
-            {user.role === 'admin' && (
-              <span className="px-2 py-0.5 text-xs bg-primary text-primary-foreground rounded">
-                Admin
-              </span>
-            )}
-            {!user.is_verified && (
-              <span className="px-2 py-0.5 text-xs bg-yellow-100 text-yellow-800 rounded">
-                Unverified
-              </span>
-            )}
-          </div>
-        )}
         {loggedIn ? (
-          <button
-            className="text-red-600 border border-destructive px-3 py-1 rounded hover:bg-destructive hover:text-white transition"
-            onClick={onLogout}
-          >
-            Logout
-          </button>
+          <UserDropdown />
         ) : (
-          <button
-            className={`px-3 py-1 rounded bg-primary text-primary-foreground hover-scale`}
+          <Button
+            variant="aurora-outline"
+            size="lg"
+            className="px-8 py-3"
             onClick={onLoginClick}
           >
             Login
-          </button>
+          </Button>
         )}
       </div>
     </header>

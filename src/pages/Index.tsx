@@ -3,6 +3,7 @@ import Navbar from "../components/Navbar";
 import TaskList from "../components/TaskList";
 import Dashboard from "../components/Dashboard";
 import Auth from "../components/Auth";
+import { ThemeToggle } from "../components/ThemeToggle";
 import { useAuth } from "../hooks/useAuth";
 
 const Index = () => {
@@ -27,11 +28,19 @@ const Index = () => {
         loggedIn={!!user}
         onLogout={logout}
         onLoginClick={() => setView("login")}
-        user={customUser}
       />
       <main className="flex-1 w-full max-w-6xl mx-auto mt-8 animate-fade-in px-6">
         {!user ? (
-          <Auth onSuccess={() => setView("tasks")} />
+          <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-6">
+            <div className="flex items-center gap-4">
+              <h1 className="text-4xl font-bold text-foreground">Welcome to TaskPilot</h1>
+              <ThemeToggle variant="outline" size="default" />
+            </div>
+            <p className="text-lg text-muted-foreground text-center max-w-md">
+              A modern task management application with beautiful dark mode support
+            </p>
+            <Auth onSuccess={() => setView("tasks")} />
+          </div>
         ) : (
           <>
             {view === "tasks" && <TaskList />}

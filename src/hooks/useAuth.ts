@@ -20,6 +20,7 @@ export interface CustomUser {
   created_at: any; // Firestore timestamp
   last_login: any; // Firestore timestamp
   password_hash?: string; // Not stored in frontend for security
+  avatar_url?: string; // Optional avatar URL
 }
 
 // Helper function to get user-friendly error messages
