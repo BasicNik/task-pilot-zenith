@@ -22,16 +22,16 @@ const Navbar: React.FC<Props> = ({ active, onNav, loggedIn, onLogout, onLoginCli
       <nav className="ml-12 flex gap-4 text-base font-medium">
         <Button
           variant="aurora-outline"
-          size="default"
-          className={`w-36 ${active === "tasks" ? "opacity-100" : "opacity-70"}`}
+          size="sm"
+          className={`${active === "tasks" ? "aurora-glow" : ""}`}
           onClick={() => onNav("tasks")}
         >
           Tasks
         </Button>
         <Button
           variant="aurora-outline"
-          size="default"
-          className={`w-36 ${active === "dashboard" ? "opacity-100" : "opacity-70"}`}
+          size="sm"
+          className={`${active === "dashboard" ? "aurora-glow" : ""}`}
           onClick={() => onNav("dashboard")}
         >
           Dashboard
@@ -43,8 +43,7 @@ const Navbar: React.FC<Props> = ({ active, onNav, loggedIn, onLogout, onLoginCli
         ) : (
           <Button
             variant="aurora-outline"
-            size="default"
-            className="w-36"
+            size="sm"
             onClick={onLoginClick}
           >
             Login
