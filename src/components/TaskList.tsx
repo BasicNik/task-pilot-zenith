@@ -1,9 +1,9 @@
-
 import React, { useState } from "react";
 import { Edit, Trash2, Check } from "lucide-react";
 import TaskDialog from "./TaskDialog";
 import TaskFilters from "./TaskFilters";
 import { toast } from "@/hooks/use-toast";
+import { Button } from "@/components/ui/button";
 
 type Task = {
   id: number;
@@ -91,12 +91,14 @@ const TaskList: React.FC = () => {
             Organize, filter, and manage your to-dos efficiently.
           </p>
         </div>
-        <button
+        <Button
           onClick={() => { setDialogOpen(true); setEditing(null); }}
-          className="bg-primary text-primary-foreground px-5 py-2 rounded font-semibold shadow hover-scale"
+          variant="aurora-outline"
+          size="sm"
+          className="aurora-glow w-36"
         >
           + New Task
-        </button>
+        </Button>
       </div>
       <TaskFilters onChange={setFilter} todoList={tasks} />
       <div className="overflow-x-auto bg-card rounded-lg border max-h-[60vh]">

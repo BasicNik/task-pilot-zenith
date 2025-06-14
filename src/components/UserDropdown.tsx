@@ -16,8 +16,7 @@ import {
   Sun, 
   LogOut, 
   User, 
-  Palette,
-  ChevronDown
+  Palette
 } from 'lucide-react';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useAuth, CustomUser } from '@/hooks/useAuth';
@@ -52,8 +51,9 @@ export const UserDropdown: React.FC = () => {
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuTrigger asChild>
         <Button
-          variant="ghost"
-          className="relative h-10 w-10 rounded-full border-2 border-transparent hover:border-primary transition-all duration-200 hover:scale-105"
+          variant="aurora-outline"
+          size="icon"
+          className="aurora-glow h-10 w-10 p-0"
         >
           <Avatar className="h-8 w-8">
             <AvatarImage src={customUser.avatar_url} alt={customUser.username} />
@@ -61,7 +61,6 @@ export const UserDropdown: React.FC = () => {
               {getInitials(customUser.username)}
             </AvatarFallback>
           </Avatar>
-          <ChevronDown className="absolute -bottom-1 -right-1 h-3 w-3 text-muted-foreground" />
         </Button>
       </DropdownMenuTrigger>
       
@@ -162,4 +161,4 @@ export const UserDropdown: React.FC = () => {
       </DropdownMenuContent>
     </DropdownMenu>
   );
-}; 
+};
