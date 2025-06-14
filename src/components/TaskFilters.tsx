@@ -20,23 +20,23 @@ type Task = {
 };
 
 interface Props {
-  onChange: (v: { status?: string; priority?: string; tags?: string[]; date?: string }) => void;
+  onChange: (v: { status?: string; priority?: string; tags?: string[]; date?:string }) => void;
   todoList: Task[];
 }
 
 const TaskFilters: React.FC<Props> = ({ onChange, todoList }) => {
-  const [status, setStatus] = useState<string>("");
-  const [priority, setPriority] = useState<string>("");
-  const [tag, setTag] = useState<string>("");
+  const [status, setStatus] = useState<string>("all");
+  const [priority, setPriority] = useState<string>("all");
+  const [tag, setTag] = useState<string>("all");
 
   // Unique tag list for filter dropdown
-  const tagSet = Array.from(new Set(todoList.flatMap(t => t.tags)));
+  const tagSet = Array.from(new Set(todoList.flatMap(t => t.tags).filter(Boolean)));
 
   React.useEffect(() => {
     const filter: { status?: string; priority?: string; tags?: string[] } = {};
-    if (status) filter.status = status;
-    if (priority) filter.priority = priority;
-    if (tag) filter.tags = [tag];
+    if (status && status !== 'all') filter.status = status;
+    if (priority && priority !== 'all') filter.priority = priority;
+    if (tag && tag !== 'all') filter.tags = [tag];
     onChange(filter);
   }, [status, priority, tag, onChange]);
 
@@ -49,7 +49,7 @@ const TaskFilters: React.FC<Props> = ({ onChange, todoList }) => {
             <SelectValue placeholder="All" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">All</SelectItem>
+            <SelectItem value="all">All</SelectItem>
             <SelectItem value="Pending">Pending</SelectItem>
             <SelectItem value="Completed">Completed</SelectItem>
           </SelectContent>
@@ -63,7 +63,7 @@ const TaskFilters: React.FC<Props> = ({ onChange, todoList }) => {
             <SelectValue placeholder="All" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">All</SelectItem>
+            <SelectItem value="all">All</SelectItem>
             <SelectItem value="Low">Low</SelectItem>
             <SelectItem value="Medium">Medium</SelectItem>
             <SelectItem value="High">High</SelectItem>
@@ -78,7 +78,7 @@ const TaskFilters: React.FC<Props> = ({ onChange, todoList }) => {
             <SelectValue placeholder="All" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">All</SelectItem>
+            <SelectItem value="all">All</SelectItem>
             {tagSet.map((t) => (
               <SelectItem value={t} key={t}>{t}</SelectItem>
             ))}
