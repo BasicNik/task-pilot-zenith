@@ -18,10 +18,16 @@ type Task = {
   dueDate: string;
   priority: "Low" | "Medium" | "High";
   tags: string[];
-  status: "Pending" | "Completed";
+  status: "Not Started" | "Pending" | "Completed" | "Almost Done";
 };
 
 const PRIORITIES = ["Low", "Medium", "High"];
+const STATUS_OPTIONS = [
+  "Not Started",
+  "Pending",
+  "Completed",
+  "Almost Done"
+] as const;
 
 const TaskDialog: React.FC<Props> = ({ open, onOpenChange, onSave, editing }) => {
   const [fields, setFields] = useState<Omit<Task, "id">>({
@@ -30,7 +36,7 @@ const TaskDialog: React.FC<Props> = ({ open, onOpenChange, onSave, editing }) =>
     dueDate: new Date().toISOString().split("T")[0],
     priority: "Medium",
     tags: [],
-    status: "Pending",
+    status: "Not Started",
   });
   const [tagsInput, setTagsInput] = useState("");
 
@@ -45,7 +51,7 @@ const TaskDialog: React.FC<Props> = ({ open, onOpenChange, onSave, editing }) =>
         dueDate: new Date().toISOString().split("T")[0],
         priority: "Medium",
         tags: [],
-        status: "Pending",
+        status: "Not Started",
       });
       setTagsInput("");
     }
@@ -54,13 +60,6 @@ const TaskDialog: React.FC<Props> = ({ open, onOpenChange, onSave, editing }) =>
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFields((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleStatusToggle = () => {
-    setFields((prev) => ({
-      ...prev,
-      status: prev.status === "Pending" ? "Completed" : "Pending",
-    }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -99,10 +98,9 @@ const TaskDialog: React.FC<Props> = ({ open, onOpenChange, onSave, editing }) =>
             </div>
             <div>
               <Label htmlFor="priority">Priority</Label>
-              {/* --- Dropdown styling fix below --- 
-                - The select now adapts to dark/light mode.
-                - If you want to change its size or font, adjust Tailwind classes below.
-                - BG color, border, focus ring, and text color will adapt automatically.
+              {/* Dropdown for priority: 
+                  To change the size of this select, update Tailwind classes in className below
+                  (e.g. px-3 py-2 for padding, text-base for font size)
               */}
               <select
                 id="priority"
@@ -127,15 +125,25 @@ const TaskDialog: React.FC<Props> = ({ open, onOpenChange, onSave, editing }) =>
               placeholder="work, home"
             />
           </div>
-          <div className="flex gap-3 items-center">
-            <Label>Status:</Label>
-            <button
-              type="button"
-              onClick={handleStatusToggle}
-              className={`rounded px-3 py-1 border ${fields.status === "Completed" ? "bg-green-500 text-white" : "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-100"}`}
+          <div>
+            <Label htmlFor="status">Status</Label>
+            {/* Dropdown for status:
+                To change the size of this select, update Tailwind classes in className below
+                (e.g. px-3 py-2 for padding, text-base for font size)
+            */}
+            <select
+              id="status"
+              name="status"
+              value={fields.status}
+              onChange={handleChange}
+              className="border border-input rounded-md px-3 py-2 w-full bg-background text-foreground focus:ring-2 focus:ring-primary focus:outline-none transition-colors"
             >
-              {fields.status}
-            </button>
+              {STATUS_OPTIONS.map((statusOpt) => (
+                <option key={statusOpt} value={statusOpt}>
+                  {statusOpt}
+                </option>
+              ))}
+            </select>
           </div>
           <DialogFooter>
             <button
@@ -146,8 +154,8 @@ const TaskDialog: React.FC<Props> = ({ open, onOpenChange, onSave, editing }) =>
               Cancel
             </button>
             {/* ---- Add Task button now uses aurora gradient ----
-              - To change the gradient or style, edit 'aurora-bg' and other classes below.
-              - This matches the rest of the app's gradient button style.
+                To change gradient or size, edit aurora-bg + px-4/py-2 below
+                This matches the rest of the app's gradient button style.
             */}
             <button
               type="submit"
