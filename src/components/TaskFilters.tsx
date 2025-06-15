@@ -8,21 +8,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
-
-type Task = {
-  id: number;
-  title: string;
-  description: string;
-  dueDate: string;
-  priority: "Low" | "Medium" | "High";
-  tags: string[];
-  status: "Pending" | "Completed";
-};
+import type { Task } from "./types"; // Use shared Task type
 
 interface Props {
   onChange: (v: { status?: string; priority?: string; tags?: string[]; date?:string }) => void;
   todoList: Task[];
 }
+
+// No need for local Task type definition!
 
 const TaskFilters: React.FC<Props> = ({ onChange, todoList }) => {
   const [status, setStatus] = useState<string>("all");
@@ -52,6 +45,8 @@ const TaskFilters: React.FC<Props> = ({ onChange, todoList }) => {
             <SelectItem value="all">All</SelectItem>
             <SelectItem value="Pending">Pending</SelectItem>
             <SelectItem value="Completed">Completed</SelectItem>
+            <SelectItem value="Not Started">Not Started</SelectItem>
+            <SelectItem value="Almost Done">Almost Done</SelectItem>
           </SelectContent>
         </Select>
       </div>
