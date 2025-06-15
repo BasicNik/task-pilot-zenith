@@ -1,3 +1,4 @@
+
 import React from "react";
 import Navbar from "../components/Navbar";
 import TaskList from "../components/TaskList";
@@ -5,6 +6,7 @@ import Dashboard from "../components/Dashboard";
 import Auth from "../components/Auth";
 import { ThemeToggle } from "../components/ThemeToggle";
 import { useAuth } from "../hooks/useAuth";
+import AuroraBanner from "../components/AuroraBanner";
 
 const Index = () => {
   // Simple navigation state
@@ -22,6 +24,8 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
+      {/* Aurora Banner */}
+      <AuroraBanner />
       <Navbar
         active={view}
         onNav={setView}
