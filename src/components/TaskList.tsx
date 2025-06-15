@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Edit, Trash2, Check } from "lucide-react";
 import TaskDialog from "./TaskDialog";
@@ -5,6 +6,7 @@ import TaskFilters from "./TaskFilters";
 import { toast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 
+// Fix: update allowed status types to include all 4 used statuses
 type Task = {
   id: number;
   title: string;
@@ -12,7 +14,7 @@ type Task = {
   dueDate: string;
   priority: "Low" | "Medium" | "High";
   tags: string[];
-  status: "Pending" | "Completed";
+  status: "Not Started" | "Pending" | "Completed" | "Almost Done";
 };
 
 const initialTasks: Task[] = [
@@ -145,7 +147,12 @@ const TaskList: React.FC = () => {
                     </div>
                   </td>
                   <td>
-                    <span className={`font-medium ${task.status === "Completed" ? "text-green-600" : "text-gray-600"}`}>
+                    <span className={
+                      task.status === "Completed" ? "font-medium text-green-600" :
+                        task.status === "Almost Done" ? "font-medium text-yellow-600" :
+                          task.status === "Pending" ? "font-medium text-blue-600" :
+                            "font-medium text-white dark:text-white"
+                    }>
                       {task.status}
                     </span>
                   </td>

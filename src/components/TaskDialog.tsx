@@ -29,6 +29,14 @@ const STATUS_OPTIONS = [
   "Almost Done"
 ] as const;
 
+// Color mapping for status select
+const statusColorMap: Record<string, string> = {
+  "Not Started": "bg-white text-black dark:bg-neutral-900 dark:text-white border border-gray-300 dark:border-gray-600",
+  "Pending": "bg-blue-500 text-white",
+  "Completed": "bg-green-500 text-white",
+  "Almost Done": "bg-yellow-400 text-yellow-900",
+};
+
 const TaskDialog: React.FC<Props> = ({ open, onOpenChange, onSave, editing }) => {
   const [fields, setFields] = useState<Omit<Task, "id">>({
     title: "",
@@ -67,6 +75,11 @@ const TaskDialog: React.FC<Props> = ({ open, onOpenChange, onSave, editing }) =>
     onSave({ ...fields, tags: tagsInput.split(",").map(t => t.trim()).filter(Boolean) });
   };
 
+  // Compute select box color classes based on status
+  const statusSelectClasses =
+    "border border-input rounded-md px-3 py-2 w-full focus:ring-2 focus:ring-primary focus:outline-none transition-colors " +
+    (statusColorMap[fields.status] || "");
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-lg">
@@ -98,10 +111,6 @@ const TaskDialog: React.FC<Props> = ({ open, onOpenChange, onSave, editing }) =>
             </div>
             <div>
               <Label htmlFor="priority">Priority</Label>
-              {/* Dropdown for priority: 
-                  To change the size of this select, update Tailwind classes in className below
-                  (e.g. px-3 py-2 for padding, text-base for font size)
-              */}
               <select
                 id="priority"
                 name="priority"
@@ -127,16 +136,13 @@ const TaskDialog: React.FC<Props> = ({ open, onOpenChange, onSave, editing }) =>
           </div>
           <div>
             <Label htmlFor="status">Status</Label>
-            {/* Dropdown for status:
-                To change the size of this select, update Tailwind classes in className below
-                (e.g. px-3 py-2 for padding, text-base for font size)
-            */}
+            {/* This select will show in the correct color depending on choice */}
             <select
               id="status"
               name="status"
               value={fields.status}
               onChange={handleChange}
-              className="border border-input rounded-md px-3 py-2 w-full bg-background text-foreground focus:ring-2 focus:ring-primary focus:outline-none transition-colors"
+              className={statusSelectClasses}
             >
               {STATUS_OPTIONS.map((statusOpt) => (
                 <option key={statusOpt} value={statusOpt}>
@@ -153,10 +159,7 @@ const TaskDialog: React.FC<Props> = ({ open, onOpenChange, onSave, editing }) =>
             >
               Cancel
             </button>
-            {/* ---- Add Task button now uses aurora gradient ----
-                To change gradient or size, edit aurora-bg + px-4/py-2 below
-                This matches the rest of the app's gradient button style.
-            */}
+            {/* Gradient button for adding or saving a task */}
             <button
               type="submit"
               className="aurora-bg rounded px-4 py-2 font-medium transition-all hover:scale-105"
