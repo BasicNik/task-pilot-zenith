@@ -8,14 +8,20 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
-import type { Task } from "./types"; // Use shared Task type
+import type { Task, TaskStatus } from "./types"; // Import both Task & TaskStatus
 
 interface Props {
   onChange: (v: { status?: string; priority?: string; tags?: string[]; date?:string }) => void;
   todoList: Task[];
 }
 
-// No need for local Task type definition!
+// For generating the status dropdown from the type definition
+const STATUS_OPTIONS: TaskStatus[] = [
+  "Not Started",
+  "Pending",
+  "Completed",
+  "Almost Done",
+];
 
 const TaskFilters: React.FC<Props> = ({ onChange, todoList }) => {
   const [status, setStatus] = useState<string>("all");
@@ -43,10 +49,9 @@ const TaskFilters: React.FC<Props> = ({ onChange, todoList }) => {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All</SelectItem>
-            <SelectItem value="Pending">Pending</SelectItem>
-            <SelectItem value="Completed">Completed</SelectItem>
-            <SelectItem value="Not Started">Not Started</SelectItem>
-            <SelectItem value="Almost Done">Almost Done</SelectItem>
+            {STATUS_OPTIONS.map((s) => (
+              <SelectItem value={s} key={s}>{s}</SelectItem>
+            ))}
           </SelectContent>
         </Select>
       </div>
