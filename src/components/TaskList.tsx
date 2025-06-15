@@ -92,7 +92,7 @@ const TaskList: React.FC = () => {
         </Button>
       </div>
       <TaskFilters onChange={setFilter} todoList={tasks} />
-      <div className="overflow-x-auto bg-card rounded-lg border max-h-[60vh]">
+      <div className="overflow-x-auto bg-card dark:bg-zinc-900 rounded-lg border max-h-[60vh]">
         <table className="min-w-full">
           <thead>
             <tr className="bg-muted text-muted-foreground">

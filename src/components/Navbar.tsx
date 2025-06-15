@@ -84,7 +84,8 @@ const Navbar: React.FC<Props> = ({ active, onNav, loggedIn, onLogout, onLoginCli
             <Button
               variant="ghost"
               size="xs"
-              className="w-28 flex items-center gap-1 data-[state=open]:bg-accent data-[state=open]:text-accent-foreground"
+              className="w-28 flex items-center gap-1 data-[state=open]:bg-accent data-[state=open]:text-accent-foreground cursor-default"
+              onClick={(e) => e.preventDefault()}
             >
               <span>Features</span>
               <ChevronDown className="h-4 w-4 transition-transform duration-200 data-[state=open]:rotate-180" />
