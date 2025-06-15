@@ -11,6 +11,7 @@ import {
   Phone,
   PlayCircle,
   Users,
+  Github,
 } from "lucide-react";
 
 interface Props {
@@ -78,7 +79,7 @@ const Navbar: React.FC<Props> = ({ active, onNav, loggedIn, onLogout, onLoginCli
         >
           Dashboard
         </Button>
-        <HoverCard>
+        <HoverCard openDelay={0} closeDelay={50}>
           <HoverCardTrigger asChild>
             <Button
               variant="ghost"
@@ -132,17 +133,17 @@ const Navbar: React.FC<Props> = ({ active, onNav, loggedIn, onLogout, onLoginCli
                 </a>
               ))}
             </div>
+            <a
+              href="https://github.com/BasicNik"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-x-2.5 p-3 font-semibold text-foreground hover:bg-muted/80 transition-colors bg-muted/40 border-t border-border"
+            >
+              <Github className="h-5 w-5 flex-none text-muted-foreground" />
+              About me
+            </a>
           </HoverCardContent>
         </HoverCard>
-        <Button asChild variant="ghost" size="xs" className="w-28">
-          <a
-            href="https://github.com/BasicNik"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            About me
-          </a>
-        </Button>
       </nav>
       <div className="ml-auto flex items-center gap-3">
         {loggedIn ? (
