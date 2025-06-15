@@ -1,4 +1,3 @@
-
 import React from "react";
 import {
   PieChart,
@@ -96,37 +95,46 @@ const Dashboard: React.FC = () => {
         <h2 className="text-2xl md:text-3xl font-bold aurora-text mb-2 text-center">
           Task Status
         </h2>
-        <ResponsiveContainer width="100%" height={340}>
-          <PieChart>
-            <defs>
-              <linearGradient id="aurora-pie-completed" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stopColor="#22c55e" />
-                <stop offset="100%" stopColor="#BC13FE" />
-              </linearGradient>
-              <linearGradient id="aurora-pie-pending" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stopColor="#fd8a4a" />
-                <stop offset="100%" stopColor="#da4af7" />
-              </linearGradient>
-            </defs>
-            <Pie
-              data={pieData}
-              dataKey="value"
-              nameKey="name"
-              cx="50%"
-              cy="50%"
-              innerRadius={64}
-              outerRadius={100}
-              fill="#8884d8"
-              label={({ name, percent }) =>
-                `${name}: ${(percent * 100).toFixed(0)}%`
-              }
-            >
-              <Cell key="Completed" fill="url(#aurora-pie-completed)" />
-              <Cell key="Pending" fill="url(#aurora-pie-pending)" />
-            </Pie>
-            <Legend />
-          </PieChart>
-        </ResponsiveContainer>
+        {/* Aurora Glow Wrapper for PieChart */}
+        <div className="relative flex items-center justify-center w-full" style={{ minHeight: 340 }}>
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
+            {/* Glow effect */}
+            <div className="aurora-glow rounded-full blur-2xl opacity-80 w-72 h-72" />
+          </div>
+          <div className="relative z-10 w-full flex items-center justify-center">
+            <ResponsiveContainer width="100%" height={340}>
+              <PieChart>
+                <defs>
+                  <linearGradient id="aurora-pie-completed" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stopColor="#22c55e" />
+                    <stop offset="100%" stopColor="#BC13FE" />
+                  </linearGradient>
+                  <linearGradient id="aurora-pie-pending" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stopColor="#fd8a4a" />
+                    <stop offset="100%" stopColor="#da4af7" />
+                  </linearGradient>
+                </defs>
+                <Pie
+                  data={pieData}
+                  dataKey="value"
+                  nameKey="name"
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={64}
+                  outerRadius={100}
+                  fill="#8884d8"
+                  label={({ name, percent }) =>
+                    `${name}: ${(percent * 100).toFixed(0)}%`
+                  }
+                >
+                  <Cell key="Completed" fill="url(#aurora-pie-completed)" />
+                  <Cell key="Pending" fill="url(#aurora-pie-pending)" />
+                </Pie>
+                <Legend />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
         {/* Latest Task Status Details */}
         <div className="w-full mt-6">
           <h3 className="text-lg font-bold mb-4 text-center">Latest Task Status</h3>

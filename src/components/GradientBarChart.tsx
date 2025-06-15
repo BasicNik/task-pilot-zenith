@@ -1,4 +1,3 @@
-
 import React from "react";
 import {
   BarChart,
@@ -26,17 +25,19 @@ interface GradientBarChartProps {
   height?: number;
 }
 
-const GradientBarChart: React.FC<GradientBarChartProps> = ({ data, height = 340 }) => {
+const GradientBarChart: React.FC<GradientBarChartProps> = ({ data, height = 220 }) => {
   return (
     <ResponsiveContainer width="100%" height={height}>
-      <BarChart data={data}>
+      <BarChart
+        data={data}
+        margin={{ top: 8, right: 18, left: 18, bottom: 8 }}
+      >
         <defs>
           <linearGradient id="gradientBar" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#fd6a6a" />    {/* bright magenta/orange */}
-            <stop offset="70%" stopColor="#da4af7" />    {/* purple */}
-            <stop offset="100%" stopColor="#3661fa" />   {/* blue-ish */}
+            <stop offset="0%" stopColor="#fd6a6a" />
+            <stop offset="70%" stopColor="#da4af7" />
+            <stop offset="100%" stopColor="#3661fa" />
           </linearGradient>
-          {/* Soft glow filter */}
           <filter id="glow" height="300%" width="200%" x="-50%" y="-100%">
             <feGaussianBlur stdDeviation="7.5" result="coloredBlur"/>
             <feMerge>
@@ -87,4 +88,3 @@ const GradientBarChart: React.FC<GradientBarChartProps> = ({ data, height = 340 
 };
 
 export default GradientBarChart;
-
