@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { Menu, AppWindow, PieChart, CheckSquare, ChevronDown, Phone, PlayCircle, Users, Github } from "lucide-react";
-import UserDropdown from "./UserDropdown";
+import { UserDropdown } from "./UserDropdown";
 
 // Props interface for the Navbar
 interface Props {
