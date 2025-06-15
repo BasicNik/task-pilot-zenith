@@ -13,6 +13,7 @@ import {
   ResponsiveContainer
 } from "recharts";
 import type { Task } from "./types";
+import GradientBarChart from "./GradientBarChart";
 
 // Define aurora palette color stops
 const AURORA_GRADIENTS = [
@@ -79,13 +80,14 @@ const Dashboard: React.FC = () => {
   const today = new Date();
   const days = Array.from({ length: 5 }).map((_, i) => {
     const d = new Date(today.getTime() - (4 - i) * 86400000);
-    const label = `${d.getMonth() + 1}/${d.getDate()}`;
+    // Format as dd-mm
+    const label = `${String(d.getDate()).padStart(2, "0")}-${String(d.getMonth() + 1).padStart(2, "0")}`;
     const completedOnDay = tasks.filter(
       (t) =>
         t.status === "Completed" &&
         new Date(t.dueDate).toDateString() === d.toDateString()
     ).length;
-    return { day: label, Completed: completedOnDay };
+    return { date: label, completed: completedOnDay };
   });
 
   return (
@@ -130,32 +132,7 @@ const Dashboard: React.FC = () => {
         <h2 className="text-2xl md:text-3xl font-bold aurora-text mb-2 text-center">
           Completion Trend (Last 5 Days)
         </h2>
-        <ResponsiveContainer width="100%" height={340}>
-          <BarChart data={days}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="day" />
-            <YAxis allowDecimals={false} />
-            <Tooltip
-              cursor={{ fill: "rgba(80,0,120,0.04)" }}
-              contentStyle={{ background: "rgba(250, 200, 255, 0.95)", borderRadius: 12, border: "none", color: "#BC13FE" }}
-            />
-            <Bar
-              dataKey="Completed"
-              fill="url(#aurora-bar-gradient)"
-              radius={[16, 16, 0, 0]}
-              barSize={32}
-              label={{ position: "top", fill: "#da4af7", fontWeight: "bold", fontSize: 14 }}
-            />
-            <defs>
-              <linearGradient id="aurora-bar-gradient" x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0%" stopColor="#da4af7" />
-                <stop offset="25%" stopColor="#fd6a6a" />
-                <stop offset="50%" stopColor="#fd8a4a" />
-                <stop offset="100%" stopColor="#E025BE" />
-              </linearGradient>
-            </defs>
-          </BarChart>
-        </ResponsiveContainer>
+        <GradientBarChart data={days} />
       </section>
     </div>
   );
