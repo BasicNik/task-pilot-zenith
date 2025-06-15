@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { Menu, AppWindow, PieChart, CheckSquare, ChevronDown, Phone, PlayCircle, Users, Github } from "lucide-react";
+import UserDropdown from "./UserDropdown";
 
 // Props interface for the Navbar
 interface Props {
@@ -158,8 +159,8 @@ const Navbar: React.FC<Props> = ({ active, onNav, loggedIn, onLogout, onLoginCli
         {/* Desktop User Actions */}
         <div className="hidden lg:flex ml-auto items-center gap-3">
           {loggedIn ? (
-            // User profile dropdown/interface if logged in
-            <>{/* <UserDropdown /> */}</>
+            // Render UserDropdown if logged in
+            <UserDropdown />
           ) : (
             <Button
               variant="aurora-outline"
