@@ -9,4 +9,5 @@ export type Task = {
   priority: "Low" | "Medium" | "High";
   tags: string[];
   status: TaskStatus;
+  starred?: boolean; // Added for starring tasks
 };
