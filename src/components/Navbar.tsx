@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
@@ -50,27 +49,28 @@ const Navbar: React.FC<Props> = ({ active, onNav, loggedIn, onLogout, onLoginCli
   // State to control mobile menu visibility
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
-  // When a link is clicked (mobile), close menu and navigate
+  // Handles selecting a mobile nav tab and closes the drawer
   const handleMobileNav = (view: "tasks" | "dashboard" | "login") => {
     setIsMobileOpen(false);
     onNav(view);
   };
 
-  // Handler to close mobile menu on background or link click
+  // Closes the mobile nav drawer
   const closeMobile = () => setIsMobileOpen(false);
 
   return (
     <>
-      {/* NAVBAR HEADER: sticky at the top */}
+      {/* Desktop and Mobile Navbar Header */}
       <header className="w-full bg-background/90 backdrop-blur-sm sticky top-0 z-40 flex items-center px-4 py-2 shadow-none">
-        {/* Logo, always visible */}
+        {/* Logo - always visible */}
         <img
           src="/lovable-uploads/cffeaf6d-aacf-45a3-a5b3-6020cb5985cd.png"
           alt="TaskPilot Logo"
           className="h-10 md:h-12 lg:h-14 w-auto"
         />
-        {/* Desktop Navigation links - hidden on mobile */}
+        {/* Desktop navigation (visible on large screens) */}
         <nav className="hidden lg:flex ml-12 items-center gap-4 text-base font-medium">
+          {/* Task and Dashboard: highlight current tab */}
           <Button
             variant={active === "tasks" ? "aurora-outline" : "ghost"}
             size="xs"
@@ -155,11 +155,10 @@ const Navbar: React.FC<Props> = ({ active, onNav, loggedIn, onLogout, onLoginCli
             </HoverCardContent>
           </HoverCard>
         </nav>
-        {/* Desktop User Actions - hidden on mobile */}
+        {/* Desktop User Actions */}
         <div className="hidden lg:flex ml-auto items-center gap-3">
           {loggedIn ? (
-            // User profile dropdown/interface if logged in (componentized version)
-            // You could further document its logic in its own file.
+            // User profile dropdown/interface if logged in
             <>{/* <UserDropdown /> */}</>
           ) : (
             <Button
@@ -172,7 +171,7 @@ const Navbar: React.FC<Props> = ({ active, onNav, loggedIn, onLogout, onLoginCli
             </Button>
           )}
         </div>
-        {/* Hamburger for mobile - shown on sm/md, hidden on large screens */}
+        {/* Hamburger menu trigger for mobile */}
         <button
           className="lg:hidden ml-auto flex items-center p-2 rounded focus:outline-none focus:ring-2 focus:ring-accent"
           onClick={() => setIsMobileOpen((v) => !v)}
@@ -184,19 +183,19 @@ const Navbar: React.FC<Props> = ({ active, onNav, loggedIn, onLogout, onLoginCli
 
       {/* MOBILE NAVIGATION OVERLAY */}
       {isMobileOpen && (
-        // Overlay background, closes menu on click
+        // Mobile overlay background: clicking here closes the nav
         <div
           className="fixed inset-0 z-50 bg-black/30"
           onClick={closeMobile}
           aria-label="Close navigation menu"
         >
-          {/* The navigation drawer itself */}
+          {/* Mobile navigation drawer */}
           <nav
             className="absolute top-0 right-0 w-4/5 max-w-xs bg-background/95 h-full shadow-lg flex flex-col animate-slide-in-left"
-            onClick={(e) => e.stopPropagation()} // Prevent bubble to overlay
+            onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside drawer
             aria-label="Mobile Navigation Drawer"
           >
-            {/* Close control */}
+            {/* Drawer close button */}
             <div className="flex justify-end p-4">
               <Button
                 variant="ghost"
@@ -208,7 +207,7 @@ const Navbar: React.FC<Props> = ({ active, onNav, loggedIn, onLogout, onLoginCli
                 <Menu className="rotate-90 w-6 h-6" />
               </Button>
             </div>
-            {/* App Logo again (small) */}
+            {/* Small logo in drawer */}
             <div className="flex justify-center mb-4">
               <img
                 src="/lovable-uploads/cffeaf6d-aacf-45a3-a5b3-6020cb5985cd.png"
@@ -216,31 +215,33 @@ const Navbar: React.FC<Props> = ({ active, onNav, loggedIn, onLogout, onLoginCli
                 className="h-10"
               />
             </div>
-            {/* Primary links */}
+            {/* Primary nav buttons */}
             <div className="flex flex-col gap-1 mx-4">
+              {/* 
+                To make these buttons full width, add w-full to className. 
+                Remove block prop (not supported).
+              */}
               <Button
                 variant={active === "tasks" ? "aurora-outline" : "ghost"}
                 size="lg"
-                className={`mb-1 ${active === "tasks" ? "aurora-glow nav-active" : ""}`}
+                className={`mb-1 w-full ${active === "tasks" ? "aurora-glow nav-active" : ""}`}
                 onClick={() => handleMobileNav("tasks")}
-                block
               >
                 Tasks
               </Button>
               <Button
                 variant={active === "dashboard" ? "aurora-outline" : "ghost"}
                 size="lg"
-                className={`mb-1 ${active === "dashboard" ? "aurora-glow nav-active" : ""}`}
+                className={`mb-1 w-full ${active === "dashboard" ? "aurora-glow nav-active" : ""}`}
                 onClick={() => handleMobileNav("dashboard")}
-                block
               >
                 Dashboard
               </Button>
             </div>
-            {/* Features, calls-to-action etc for mobile (stacked) */}
+            {/* Features and Calls-to-Action */}
             <div className="mt-6 border-t border-muted pt-3 mx-4 flex flex-col gap-1">
               <span className="text-muted-foreground text-xs mb-1 mt-2 font-semibold">Features</span>
-              {features.map((item, idx) => (
+              {features.map((item) => (
                 <a
                   key={item.name}
                   href={item.href}
@@ -272,7 +273,7 @@ const Navbar: React.FC<Props> = ({ active, onNav, loggedIn, onLogout, onLoginCli
                 About me
               </a>
             </div>
-            {/* Bottom actions: login/logout */}
+            {/* Bottom actions (login or logout) */}
             <div className="flex flex-col gap-2 mt-auto mb-6 mx-4">
               {loggedIn ? (
                 <Button
@@ -283,7 +284,6 @@ const Navbar: React.FC<Props> = ({ active, onNav, loggedIn, onLogout, onLoginCli
                     closeMobile();
                     onLogout();
                   }}
-                  block
                 >
                   Logout
                 </Button>
@@ -296,7 +296,6 @@ const Navbar: React.FC<Props> = ({ active, onNav, loggedIn, onLogout, onLoginCli
                     closeMobile();
                     onLoginClick();
                   }}
-                  block
                 >
                   Login
                 </Button>
@@ -310,4 +309,3 @@ const Navbar: React.FC<Props> = ({ active, onNav, loggedIn, onLogout, onLoginCli
 };
 
 export default Navbar;
-
