@@ -136,6 +136,7 @@ const TaskList: React.FC = () => {
 
   return (
     <div className="flex flex-col gap-6">
+      {/* Header and New Task Button */}
       <div className="flex flex-col md:flex-row justify-between md:items-end gap-4">
         <div>
           <h2 className="text-2xl font-bold mb-0">Your Tasks</h2>
@@ -147,42 +148,46 @@ const TaskList: React.FC = () => {
           onClick={() => { setDialogOpen(true); setEditing(null); }}
           variant="aurora-outline"
           size="sm"
-          className="aurora-glow w-36"
+          className="aurora-glow w-full md:w-36"
         >
           + New Task
         </Button>
       </div>
-      <TaskFilters onChange={setFilter} todoList={tasks} />
-
-      {/* Bulk Actions */}
+      {/* Filters become vertical on mobile */}
+      <div className="w-full">
+        <TaskFilters onChange={setFilter} todoList={tasks} />
+      </div>
+      {/* Bulk Actions - responsive stacking */}
       {selected.length > 0 && (
-        <div className="flex flex-wrap gap-3 bg-muted/70 px-4 py-2 rounded-lg border mb-2 items-center">
+        <div className="flex flex-col sm:flex-row flex-wrap gap-2 sm:gap-3 bg-muted/70 px-4 py-2 rounded-lg border mb-2 items-start sm:items-center">
           <span className="font-semibold">{selected.length} selected</span>
-          <Button
-            variant="destructive"
-            size="sm"
-            onClick={handleBulkDelete}
-            className="px-4"
-          >
-            <Trash2 className="w-4 h-4" /> Delete
-          </Button>
-          <Button
-            variant="aurora-outline"
-            size="sm"
-            onClick={handleBulkComplete}
-            className="px-4"
-          >
-            <Check className="w-4 h-4" /> Mark Complete
-          </Button>
-          <Button
-            variant="aurora-outline"
-            size="sm"
-            onClick={handleBulkStar}
-            className="px-4"
-          >
-            <Star className="w-4 h-4" /> Star
-          </Button>
-          <div className="flex items-center gap-2">
+          <div className="flex gap-2 flex-wrap">
+            <Button
+              variant="destructive"
+              size="sm"
+              onClick={handleBulkDelete}
+              className="px-4 w-full sm:w-auto"
+            >
+              <Trash2 className="w-4 h-4" /> Delete
+            </Button>
+            <Button
+              variant="aurora-outline"
+              size="sm"
+              onClick={handleBulkComplete}
+              className="px-4 w-full sm:w-auto"
+            >
+              <Check className="w-4 h-4" /> Mark Complete
+            </Button>
+            <Button
+              variant="aurora-outline"
+              size="sm"
+              onClick={handleBulkStar}
+              className="px-4 w-full sm:w-auto"
+            >
+              <Star className="w-4 h-4" /> Star
+            </Button>
+          </div>
+          <div className="flex items-center gap-2 w-full sm:w-auto">
             <span>Status:</span>
             <select
               className="border rounded px-2 py-1 bg-background"
@@ -198,26 +203,26 @@ const TaskList: React.FC = () => {
           </div>
         </div>
       )}
-
-      <div className="overflow-x-auto bg-card dark:bg-zinc-800/90 rounded-lg border max-h-[60vh]">
-        <table className="min-w-full">
+      {/* Responsive Table */}
+      <div className="overflow-x-auto bg-card dark:bg-zinc-800/90 rounded-lg border max-h-[60vh] scrollbar-thin scrollbar-thumb-muted">
+        <table className="min-w-[600px] w-full text-sm md:text-base">
           <thead>
             <tr className="bg-muted text-muted-foreground">
-              <th className="px-3">
+              <th className="px-2 md:px-3 py-2 min-w-[36px]">
                 <Checkbox
                   checked={allChecked}
                   onCheckedChange={handleSelectAll}
                   aria-label="Select all tasks"
                 />
               </th>
-              <th className="px-3">Star</th>
-              <th className="px-4 py-2">Title</th>
-              <th>Description</th>
-              <th>Due</th>
-              <th>Priority</th>
-              <th>Tags</th>
-              <th>Status</th>
-              <th className="w-[110px]"></th>
+              <th className="px-2 md:px-3 py-2 min-w-[46px]">Star</th>
+              <th className="px-2 md:px-4 py-2 min-w-[120px]">Title</th>
+              <th className="px-2 min-w-[120px]">Description</th>
+              <th className="px-2 min-w-[70px]">Due</th>
+              <th className="px-2 min-w-[70px]">Priority</th>
+              <th className="px-2 min-w-[65px]">Tags</th>
+              <th className="px-2 min-w-[80px]">Status</th>
+              <th className="px-2 min-w-[90px] w-[88px]"></th>
             </tr>
           </thead>
           <tbody>
@@ -227,17 +232,15 @@ const TaskList: React.FC = () => {
               </tr>
             ) : (
               sorted.map((task) => (
-                <tr key={task.id} className="border-b relative">
-                  {/* Checkbox */}
-                  <td className="px-3">
+                <tr key={task.id} className="border-b relative hover:bg-muted/60 transition">
+                  <td className="px-2 md:px-3">
                     <Checkbox
                       checked={selected.includes(task.id)}
                       onCheckedChange={() => handleRowCheckbox(task.id)}
                       aria-label="Select task"
                     />
                   </td>
-                  {/* Star button */}
-                  <td className="px-3 text-center">
+                  <td className="px-2 md:px-3 text-center">
                     <button
                       title={task.starred ? "Unstar" : "Star"}
                       onClick={() => handleStar(task.id)}
@@ -247,13 +250,12 @@ const TaskList: React.FC = () => {
                       <Star size={20} fill={task.starred ? "#facc15" : "none"} />
                     </button>
                   </td>
-                  {/* Title */}
-                  <td className="px-4 py-2 font-semibold">{task.title}</td>
-                  <td>{task.description}</td>
-                  <td>
+                  <td className="px-2 md:px-4 py-2 font-semibold whitespace-nowrap">{task.title}</td>
+                  <td className="px-2 whitespace-nowrap">{task.description}</td>
+                  <td className="px-2 whitespace-nowrap">
                     {new Date(task.dueDate).toLocaleDateString([], { month: "short", day: "numeric" })}
                   </td>
-                  <td>
+                  <td className="px-2 whitespace-nowrap">
                     <span className={`inline-block px-2 py-1 rounded text-xs font-bold ${
                       task.priority === "High"
                         ? "bg-red-500/10 text-red-600"
@@ -264,14 +266,14 @@ const TaskList: React.FC = () => {
                       {task.priority}
                     </span>
                   </td>
-                  <td>
+                  <td className="px-2 whitespace-nowrap">
                     <div className="flex gap-1 flex-wrap">
                       {task.tags.map((tag) => (
                         <span key={tag} className="bg-muted px-2 py-0.5 rounded text-xs">{tag}</span>
                       ))}
                     </div>
                   </td>
-                  <td>
+                  <td className="px-2 whitespace-nowrap">
                     <span className={
                       task.status === "Completed" ? "font-medium text-green-600" :
                         task.status === "Almost Done" ? "font-medium text-yellow-600" :
@@ -281,8 +283,8 @@ const TaskList: React.FC = () => {
                       {task.status}
                     </span>
                   </td>
-                  <td>
-                    <div className="flex gap-2">
+                  <td className="px-2 whitespace-nowrap">
+                    <div className="flex gap-1">
                       <button
                         title="Edit"
                         onClick={() => {
