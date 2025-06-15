@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import {
   AppWindow,
-  BarChart,
+  PieChart,
   CheckSquare,
   ChevronDown,
   Phone,
@@ -44,7 +44,7 @@ const features = [
     name: "Analytics & Reporting",
     description: "Gain insights into your team's productivity.",
     href: "#",
-    icon: BarChart,
+    icon: PieChart,
   },
 ];
 const callsToAction = [
@@ -134,6 +134,15 @@ const Navbar: React.FC<Props> = ({ active, onNav, loggedIn, onLogout, onLoginCli
             </div>
           </HoverCardContent>
         </HoverCard>
+        <Button asChild variant="ghost" size="xs" className="w-28">
+          <a
+            href="https://github.com/BasicNik"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            About me
+          </a>
+        </Button>
       </nav>
       <div className="ml-auto flex items-center gap-3">
         {loggedIn ? (
