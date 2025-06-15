@@ -130,7 +130,7 @@ const Dashboard: React.FC = () => {
       </section>
       <section className="flex-1 flex flex-col items-center bg-card border rounded-lg shadow-lg p-5">
         <h2 className="text-2xl md:text-3xl font-bold aurora-text mb-2 text-center">
-          Completion Trend (Last 5 Days)
+          Overview
         </h2>
         <GradientBarChart data={days} />
       </section>
