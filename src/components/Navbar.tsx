@@ -2,7 +2,7 @@
 import React from "react";
 import { UserDropdown } from "./UserDropdown";
 import { Button } from "@/components/ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import {
   AppWindow,
   BarChart,
@@ -78,8 +78,8 @@ const Navbar: React.FC<Props> = ({ active, onNav, loggedIn, onLogout, onLoginCli
         >
           Dashboard
         </Button>
-        <Popover>
-          <PopoverTrigger asChild>
+        <HoverCard>
+          <HoverCardTrigger asChild>
             <Button
               variant="ghost"
               size="xs"
@@ -88,8 +88,8 @@ const Navbar: React.FC<Props> = ({ active, onNav, loggedIn, onLogout, onLoginCli
               <span>Features</span>
               <ChevronDown className="h-4 w-4 transition-transform duration-200 data-[state=open]:rotate-180" />
             </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-screen max-w-md mt-2 rounded-xl p-0 overflow-hidden shadow-lg">
+          </HoverCardTrigger>
+          <HoverCardContent className="w-screen max-w-md mt-2 rounded-xl p-0 overflow-hidden shadow-lg">
             <div className="p-4">
               {features.map((item) => (
                 <a
@@ -121,8 +121,8 @@ const Navbar: React.FC<Props> = ({ active, onNav, loggedIn, onLogout, onLoginCli
                 </a>
               ))}
             </div>
-          </PopoverContent>
-        </Popover>
+          </HoverCardContent>
+        </HoverCard>
       </nav>
       <div className="ml-auto flex items-center gap-3">
         {loggedIn ? (
@@ -143,3 +143,4 @@ const Navbar: React.FC<Props> = ({ active, onNav, loggedIn, onLogout, onLoginCli
 };
 
 export default Navbar;
+
