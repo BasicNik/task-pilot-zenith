@@ -100,7 +100,7 @@ const Navbar: React.FC<Props> = ({ active, onNav, loggedIn, onLogout, onLoginCli
                 </linearGradient>
               </defs>
             </svg>
-            <div className="p-4">
+            <div className="p-4 bg-popover">
               {features.map((item) => (
                 <a
                   key={item.name}
@@ -122,7 +122,7 @@ const Navbar: React.FC<Props> = ({ active, onNav, loggedIn, onLogout, onLoginCli
                 </a>
               ))}
             </div>
-            <div className="grid grid-cols-2 divide-x divide-border bg-muted/40">
+            <div className="grid grid-cols-2 divide-x divide-border bg-muted">
               {callsToAction.map((item) => (
                 <a
                   key={item.name}
@@ -138,7 +138,7 @@ const Navbar: React.FC<Props> = ({ active, onNav, loggedIn, onLogout, onLoginCli
               href="https://github.com/BasicNik"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center gap-x-2.5 p-3 font-semibold text-foreground hover:bg-muted/80 transition-colors bg-muted/40 border-t border-border"
+              className="flex items-center justify-center gap-x-2.5 p-3 font-semibold text-foreground hover:bg-muted/80 transition-colors bg-muted border-t border-border"
             >
               <Github className="h-5 w-5 flex-none text-muted-foreground" />
               About me

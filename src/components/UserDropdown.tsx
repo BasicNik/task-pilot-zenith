@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import {
@@ -71,7 +72,7 @@ export const UserDropdown: React.FC = () => {
         sideOffset={8}
       >
         {/* User Profile Section */}
-        <div className="p-4 bg-gradient-to-r from-primary/5 to-primary/10 border-b">
+        <div className="p-4 bg-muted border-b">
           <div className="flex items-center space-x-3">
             <Avatar className="h-12 w-12 border-2 border-primary/20">
               <AvatarImage src={customUser.avatar_url} alt={customUser.username} />
@@ -110,7 +111,7 @@ export const UserDropdown: React.FC = () => {
         </div>
 
         {/* Menu Items */}
-        <div className="p-2">
+        <div className="p-2 bg-popover">
           <DropdownMenuLabel className="text-xs font-medium text-muted-foreground px-2 py-1.5">
             Account
           </DropdownMenuLabel>
