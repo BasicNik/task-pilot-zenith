@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import {
@@ -10,14 +11,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { 
-  Settings, 
-  Moon, 
-  Sun, 
-  LogOut, 
-  User, 
-  Palette
-} from 'lucide-react';
+import { Settings, Moon, Sun, LogOut, User, Palette } from 'lucide-react';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useAuth, CustomUser } from '@/hooks/useAuth';
 
@@ -25,15 +19,18 @@ export const UserDropdown: React.FC = () => {
   const { theme, toggleTheme } = useTheme();
   const { customUser, logout } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
+  // State for handling broken or missing avatar images
+  const [isImgBroken, setIsImgBroken] = useState(false);
 
   if (!customUser) {
     return null;
   }
 
   // Check for avatar URL and use fallback if not present
-  const avatarUrl = customUser.avatar_url && customUser.avatar_url.trim() !== ""
-    ? customUser.avatar_url
-    : "/placeholder.svg"; // could be a local public fallback picture
+  const avatarUrl =
+    customUser.avatar_url && customUser.avatar_url.trim() !== ""
+      ? customUser.avatar_url
+      : undefined; // instead of /placeholder.svg, use undefined for truly blank
 
   const getInitials = (name: string) => {
     return name
@@ -61,7 +58,14 @@ export const UserDropdown: React.FC = () => {
           className="aurora-glow h-10 w-10 p-0"
         >
           <Avatar className="h-8 w-8">
-            <AvatarImage src={avatarUrl} alt={customUser.username || "User"} />
+            {/* Only render AvatarImage if avatarUrl is set and image is not broken */}
+            {avatarUrl && !isImgBroken && (
+              <AvatarImage
+                src={avatarUrl}
+                alt={customUser.username || "User"}
+                onError={() => setIsImgBroken(true)}
+              />
+            )}
             <AvatarFallback className="bg-primary text-primary-foreground font-semibold">
               {getInitials(customUser.username || "U")}
             </AvatarFallback>
@@ -79,7 +83,13 @@ export const UserDropdown: React.FC = () => {
         <div className="p-4 bg-muted border-b">
           <div className="flex items-center space-x-3">
             <Avatar className="h-12 w-12 border-2 border-primary/20">
-              <AvatarImage src={avatarUrl} alt={customUser.username || "User"} />
+              {avatarUrl && !isImgBroken && (
+                <AvatarImage
+                  src={avatarUrl}
+                  alt={customUser.username || "User"}
+                  onError={() => setIsImgBroken(true)}
+                />
+              )}
               <AvatarFallback className="bg-primary text-primary-foreground font-semibold text-lg">
                 {getInitials(customUser.username || "U")}
               </AvatarFallback>
