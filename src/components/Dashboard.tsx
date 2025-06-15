@@ -1,15 +1,10 @@
+
 import React from "react";
 import {
   PieChart,
   Pie,
   Cell,
   Legend,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
   ResponsiveContainer
 } from "recharts";
 import type { Task } from "./types";
@@ -90,6 +85,11 @@ const Dashboard: React.FC = () => {
     return { date: label, completed: completedOnDay };
   });
 
+  // Get the 3 tasks with the latest due dates (descending)
+  const latestTasks = [...tasks]
+    .sort((a, b) => new Date(b.dueDate).getTime() - new Date(a.dueDate).getTime())
+    .slice(0, 3);
+
   return (
     <div className="flex flex-col md:flex-row gap-12 animate-fade-in">
       <section className="flex-1 flex flex-col items-center bg-card border rounded-lg shadow-lg p-5">
@@ -127,6 +127,34 @@ const Dashboard: React.FC = () => {
             <Legend />
           </PieChart>
         </ResponsiveContainer>
+        {/* Latest Task Status Details */}
+        <div className="w-full mt-6">
+          <h3 className="text-lg font-bold mb-4 text-center">Latest Task Status</h3>
+          <div className="flex flex-col gap-2">
+            {latestTasks.map((task) => (
+              <div
+                key={task.id}
+                className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-muted rounded-md px-3 py-2 shadow-sm"
+              >
+                <span className="font-medium text-foreground">{task.title}</span>
+                <span
+                  className={
+                    "mt-1 sm:mt-0 sm:ml-3 inline-block px-2 py-1 rounded text-xs font-bold " +
+                    (task.status === "Completed"
+                      ? "bg-green-500/10 text-green-700"
+                      : task.status === "Almost Done"
+                        ? "bg-yellow-400/10 text-yellow-600"
+                        : task.status === "Pending"
+                          ? "bg-blue-500/10 text-blue-600"
+                          : "bg-gray-700/10 text-white dark:text-white")
+                  }
+                >
+                  {task.status}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
       </section>
       <section className="flex-1 flex flex-col items-center bg-card border rounded-lg shadow-lg p-5">
         <h2 className="text-2xl md:text-3xl font-bold aurora-text mb-2 text-center">
