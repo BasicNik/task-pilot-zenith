@@ -90,6 +90,14 @@ const Navbar: React.FC<Props> = ({ active, onNav, loggedIn, onLogout, onLoginCli
             </Button>
           </HoverCardTrigger>
           <HoverCardContent className="w-screen max-w-md mt-2 rounded-xl p-0 overflow-hidden shadow-lg">
+            <svg width="0" height="0" style={{ position: "absolute" }}>
+              <defs>
+                <linearGradient id="feature-icon-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#da4af7" />
+                  <stop offset="100%" stopColor="#fd8a4a" />
+                </linearGradient>
+              </defs>
+            </svg>
             <div className="p-4">
               {features.map((item) => (
                 <a
@@ -97,7 +105,10 @@ const Navbar: React.FC<Props> = ({ active, onNav, loggedIn, onLogout, onLoginCli
                   href={item.href}
                   className="p-3 flex items-start rounded-lg hover:bg-muted transition-colors"
                 >
-                  <item.icon className="flex-shrink-0 h-6 w-6 text-primary mt-1" />
+                  <item.icon
+                    className="flex-shrink-0 h-6 w-6 mt-1"
+                    stroke="url(#feature-icon-gradient)"
+                  />
                   <div className="ml-4">
                     <p className="text-base font-medium text-foreground">
                       {item.name}
@@ -143,4 +154,3 @@ const Navbar: React.FC<Props> = ({ active, onNav, loggedIn, onLogout, onLoginCli
 };
 
 export default Navbar;
-
