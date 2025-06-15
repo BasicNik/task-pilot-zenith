@@ -99,12 +99,17 @@ const TaskDialog: React.FC<Props> = ({ open, onOpenChange, onSave, editing }) =>
             </div>
             <div>
               <Label htmlFor="priority">Priority</Label>
+              {/* --- Dropdown styling fix below --- 
+                - The select now adapts to dark/light mode.
+                - If you want to change its size or font, adjust Tailwind classes below.
+                - BG color, border, focus ring, and text color will adapt automatically.
+              */}
               <select
                 id="priority"
                 name="priority"
                 value={fields.priority}
                 onChange={handleChange}
-                className="border rounded px-3 py-2 w-full"
+                className="border border-input rounded-md px-3 py-2 w-full bg-background text-foreground focus:ring-2 focus:ring-primary focus:outline-none transition-colors"
               >
                 {PRIORITIES.map((p) => (
                   <option key={p} value={p}>{p}</option>
@@ -127,7 +132,7 @@ const TaskDialog: React.FC<Props> = ({ open, onOpenChange, onSave, editing }) =>
             <button
               type="button"
               onClick={handleStatusToggle}
-              className={`rounded px-3 py-1 border ${fields.status === "Completed" ? "bg-green-500 text-white" : "bg-gray-100 text-gray-800"}`}
+              className={`rounded px-3 py-1 border ${fields.status === "Completed" ? "bg-green-500 text-white" : "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-100"}`}
             >
               {fields.status}
             </button>
@@ -136,13 +141,17 @@ const TaskDialog: React.FC<Props> = ({ open, onOpenChange, onSave, editing }) =>
             <button
               type="button"
               onClick={() => onOpenChange(false)}
-              className="bg-muted text-gray-700 rounded px-4 py-2 mr-2"
+              className="bg-muted text-gray-700 dark:text-gray-300 rounded px-4 py-2 mr-2"
             >
               Cancel
             </button>
+            {/* ---- Add Task button now uses aurora gradient ----
+              - To change the gradient or style, edit 'aurora-bg' and other classes below.
+              - This matches the rest of the app's gradient button style.
+            */}
             <button
               type="submit"
-              className="bg-primary text-primary-foreground rounded px-4 py-2 font-medium"
+              className="aurora-bg rounded px-4 py-2 font-medium transition-all hover:scale-105"
             >
               {editing ? "Save Changes" : "Add Task"}
             </button>
