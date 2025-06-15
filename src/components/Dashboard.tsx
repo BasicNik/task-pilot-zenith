@@ -1,4 +1,3 @@
-
 import React from "react";
 import {
   PieChart,
@@ -13,6 +12,7 @@ import {
   Tooltip,
   ResponsiveContainer
 } from "recharts";
+import type { Task } from "./types";
 
 // Define aurora palette color stops
 const AURORA_GRADIENTS = [
@@ -24,16 +24,6 @@ const AURORA_GRADIENTS = [
   "#E025BE", // magenta
   "#F4B5FD", // soft pink
 ];
-
-type Task = {
-  id: number;
-  title: string;
-  description: string;
-  dueDate: string;
-  priority: "Low" | "Medium" | "High";
-  tags: string[];
-  status: "Pending" | "Completed";
-};
 
 const sampleTasks: Task[] = [
   {
@@ -172,4 +162,3 @@ const Dashboard: React.FC = () => {
 };
 
 export default Dashboard;
-

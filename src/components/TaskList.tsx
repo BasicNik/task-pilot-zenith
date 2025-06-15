@@ -1,21 +1,10 @@
-
 import React, { useState } from "react";
 import { Edit, Trash2, Check } from "lucide-react";
 import TaskDialog from "./TaskDialog";
 import TaskFilters from "./TaskFilters";
 import { toast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
-
-// Fix: update allowed status types to include all 4 used statuses
-type Task = {
-  id: number;
-  title: string;
-  description: string;
-  dueDate: string;
-  priority: "Low" | "Medium" | "High";
-  tags: string[];
-  status: "Not Started" | "Pending" | "Completed" | "Almost Done";
-};
+import type { Task, TaskStatus } from "./types";
 
 const initialTasks: Task[] = [
   {
