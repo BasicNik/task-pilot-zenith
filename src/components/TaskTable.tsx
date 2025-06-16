@@ -68,7 +68,7 @@ const TaskTable: React.FC<TaskTableProps> = ({
                   aria-label="Select task"
                 />
               </td>
-              <td className="px-2 md:px-3 text-center">
+              <td className="px-2 md:px-3">
                 <button
                   title={task.starred ? "Unstar" : "Star"}
                   onClick={() => onStar(task.id)}
