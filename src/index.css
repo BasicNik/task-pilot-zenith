@@ -173,6 +173,87 @@
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
+/* Mobile-friendly animations */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-in-left {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out forwards;
+}
+
+.animate-slide-in-left {
+  animation: slide-in-left 0.3s ease-out forwards;
+}
+
+.animate-scale-in {
+  animation: scale-in 0.2s ease-out forwards;
+}
+
+/* Mobile-optimized hover effects */
+@media (hover: hover) {
+  .hover-scale:hover {
+    transform: scale(1.05);
+    transition: transform 0.2s ease;
+  }
+  
+  .hover-scale-subtle:hover {
+    transform: scale(1.02);
+    transition: transform 0.2s ease;
+  }
+}
+
+/* Touch-friendly tap targets for mobile */
+@media (max-width: 768px) {
+  button, a {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Reduce icon sizes on mobile */
+  .mobile-icon-sm {
+    width: 1rem;
+    height: 1rem;
+  }
+  
+  .mobile-icon-md {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+  
+  .mobile-icon-lg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+}
+
 /* Hover effects for dark theme */
 .dark .hover-scale:hover {
   transform: scale(1.05);

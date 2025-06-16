@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { Menu, AppWindow, PieChart, CheckSquare, ChevronDown, Phone, PlayCircle, Users, Github } from "lucide-react";
 import { UserDropdown } from "./UserDropdown";
+import { ThemeToggle } from "./ThemeToggle";
 
 // Props interface for the Navbar
 interface Props {
@@ -174,11 +175,11 @@ const Navbar: React.FC<Props> = ({ active, onNav, loggedIn, onLogout, onLoginCli
         </div>
         {/* Hamburger menu trigger for mobile */}
         <button
-          className="lg:hidden ml-auto flex items-center p-2 rounded focus:outline-none focus:ring-2 focus:ring-accent"
+          className="lg:hidden ml-auto flex items-center p-2 rounded focus:outline-none focus:ring-2 focus:ring-accent transition-all duration-200 hover:scale-105"
           onClick={() => setIsMobileOpen((v) => !v)}
           aria-label="Open navigation menu"
         >
-          <Menu className="h-7 w-7 text-muted-foreground" />
+          <Menu className="h-6 w-6 text-muted-foreground" />
         </button>
       </header>
 
@@ -203,18 +204,23 @@ const Navbar: React.FC<Props> = ({ active, onNav, loggedIn, onLogout, onLoginCli
                 size="icon"
                 onClick={closeMobile}
                 aria-label="Close"
+                className="transition-all duration-200 hover:scale-105"
               >
                 <span className="sr-only">Close</span>
-                <Menu className="rotate-90 w-6 h-6" />
+                <Menu className="rotate-90 w-5 h-5" />
               </Button>
             </div>
             {/* Small logo in drawer */}
-            <div className="flex justify-center mb-4">
+            <div className="flex justify-center mb-4 animate-fade-in">
               <img
                 src="/lovable-uploads/cffeaf6d-aacf-45a3-a5b3-6020cb5985cd.png"
                 alt="TaskPilot Logo"
-                className="h-10"
+                className="h-10 transition-transform duration-200 hover:scale-105"
               />
+            </div>
+            {/* Theme toggle for mobile */}
+            <div className="flex justify-center mb-4 animate-fade-in">
+              <ThemeToggle variant="outline" size="sm" className="transition-all duration-200 hover:scale-105" />
             </div>
             {/* Primary nav buttons */}
             <div className="flex flex-col gap-1 mx-4">
@@ -225,7 +231,7 @@ const Navbar: React.FC<Props> = ({ active, onNav, loggedIn, onLogout, onLoginCli
               <Button
                 variant={active === "tasks" ? "aurora-outline" : "ghost"}
                 size="lg"
-                className={`mb-1 w-full ${active === "tasks" ? "aurora-glow nav-active" : ""}`}
+                className={`mb-1 w-full transition-all duration-200 hover:scale-[1.02] ${active === "tasks" ? "aurora-glow nav-active" : ""}`}
                 onClick={() => handleMobileNav("tasks")}
               >
                 Tasks
@@ -233,7 +239,7 @@ const Navbar: React.FC<Props> = ({ active, onNav, loggedIn, onLogout, onLoginCli
               <Button
                 variant={active === "dashboard" ? "aurora-outline" : "ghost"}
                 size="lg"
-                className={`mb-1 w-full ${active === "dashboard" ? "aurora-glow nav-active" : ""}`}
+                className={`mb-1 w-full transition-all duration-200 hover:scale-[1.02] ${active === "dashboard" ? "aurora-glow nav-active" : ""}`}
                 onClick={() => handleMobileNav("dashboard")}
               >
                 Dashboard
@@ -242,24 +248,26 @@ const Navbar: React.FC<Props> = ({ active, onNav, loggedIn, onLogout, onLoginCli
             {/* Features and Calls-to-Action */}
             <div className="mt-6 border-t border-muted pt-3 mx-4 flex flex-col gap-1">
               <span className="text-muted-foreground text-xs mb-1 mt-2 font-semibold">Features</span>
-              {features.map((item) => (
+              {features.map((item, index) => (
                 <a
                   key={item.name}
                   href={item.href}
-                  className="flex items-center py-2 px-2 rounded hover:bg-muted/70 gap-2"
+                  className="flex items-center py-2 px-2 rounded hover:bg-muted/70 gap-2 transition-all duration-200 hover:scale-[1.02] animate-fade-in"
+                  style={{ animationDelay: `${index * 50}ms` }}
                 >
-                  <item.icon className="w-5 h-5" />
+                  <item.icon className="w-4 h-4" />
                   <span className="text-sm font-medium">{item.name}</span>
                 </a>
               ))}
               <div className="flex flex-row gap-2 mt-4">
-                {callsToAction.map((item) => (
+                {callsToAction.map((item, index) => (
                   <a
                     key={item.name}
                     href={item.href}
-                    className="flex items-center gap-1 rounded px-3 py-2 text-foreground hover:bg-muted/80 text-sm font-semibold transition"
+                    className="flex items-center gap-1 rounded px-3 py-2 text-foreground hover:bg-muted/80 text-sm font-semibold transition-all duration-200 hover:scale-[1.02] animate-fade-in"
+                    style={{ animationDelay: `${(index + features.length) * 50}ms` }}
                   >
-                    <item.icon className="h-5 w-5 flex-none text-muted-foreground" />
+                    <item.icon className="h-4 w-4 flex-none text-muted-foreground" />
                     {item.name}
                   </a>
                 ))}
@@ -268,9 +276,10 @@ const Navbar: React.FC<Props> = ({ active, onNav, loggedIn, onLogout, onLoginCli
                 href="https://github.com/BasicNik"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-x-2 p-2 font-semibold text-foreground hover:bg-muted/80 transition-colors mt-2 mb-2"
+                className="flex items-center gap-x-2 p-2 font-semibold text-foreground hover:bg-muted/80 transition-all duration-200 hover:scale-[1.02] mt-2 mb-2 animate-fade-in"
+                style={{ animationDelay: `${(features.length + callsToAction.length) * 50}ms` }}
               >
-                <Github className="h-5 w-5 flex-none text-muted-foreground" />
+                <Github className="h-4 w-4 flex-none text-muted-foreground" />
                 About me
               </a>
             </div>
@@ -280,7 +289,8 @@ const Navbar: React.FC<Props> = ({ active, onNav, loggedIn, onLogout, onLoginCli
                 <Button
                   variant="ghost"
                   size="lg"
-                  className="w-full"
+                  className="w-full transition-all duration-200 hover:scale-[1.02] animate-fade-in"
+                  style={{ animationDelay: `${(features.length + callsToAction.length + 1) * 50}ms` }}
                   onClick={() => {
                     closeMobile();
                     onLogout();
@@ -292,7 +302,8 @@ const Navbar: React.FC<Props> = ({ active, onNav, loggedIn, onLogout, onLoginCli
                 <Button
                   variant="aurora-outline"
                   size="lg"
-                  className="w-full"
+                  className="w-full transition-all duration-200 hover:scale-[1.02] animate-fade-in"
+                  style={{ animationDelay: `${(features.length + callsToAction.length + 1) * 50}ms` }}
                   onClick={() => {
                     closeMobile();
                     onLoginClick();

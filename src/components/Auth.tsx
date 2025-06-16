@@ -87,15 +87,15 @@ const Auth: React.FC<AuthProps> = ({ onSuccess }) => {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-[60vh]">
-      <Card className="w-full max-w-md">
+    <div className="flex items-center justify-center min-h-[60vh] animate-fade-in">
+      <Card className="w-full max-w-md animate-scale-in">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl text-center">Welcome to TaskPilot</CardTitle>
           <CardDescription className="text-center">
             Sign in to your account or create a new one
           </CardDescription>
           {isDemoMode && (
-            <Alert className="mt-4">
+            <Alert className="mt-4 animate-fade-in">
               <Info className="h-4 w-4" />
               <AlertDescription>
                 Demo mode: No Firebase credentials configured. Authentication is simulated.
@@ -103,7 +103,7 @@ const Auth: React.FC<AuthProps> = ({ onSuccess }) => {
             </Alert>
           )}
           {customUser && (
-            <Alert className="mt-4">
+            <Alert className="mt-4 animate-fade-in">
               <Info className="h-4 w-4" />
               <AlertDescription>
                 Welcome back, {customUser.username}! 
@@ -116,12 +116,12 @@ const Auth: React.FC<AuthProps> = ({ onSuccess }) => {
         <CardContent>
           <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
             <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="login">Login</TabsTrigger>
-              <TabsTrigger value="signup">Sign Up</TabsTrigger>
+              <TabsTrigger value="login" className="transition-all duration-200 hover:scale-[1.02]">Login</TabsTrigger>
+              <TabsTrigger value="signup" className="transition-all duration-200 hover:scale-[1.02]">Sign Up</TabsTrigger>
             </TabsList>
 
             {error && (
-              <Alert className="mt-4" variant="destructive">
+              <Alert className="mt-4 animate-fade-in" variant="destructive">
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
             )}
@@ -136,12 +136,12 @@ const Auth: React.FC<AuthProps> = ({ onSuccess }) => {
                       id="login-email"
                       type="email"
                       placeholder="Enter your email"
-                      className="pl-10"
+                      className="pl-10 transition-all duration-200 focus:scale-[1.01]"
                       {...loginForm.register('email')}
                     />
                   </div>
                   {loginForm.formState.errors.email && (
-                    <p className="text-sm text-destructive">
+                    <p className="text-sm text-destructive animate-fade-in">
                       {loginForm.formState.errors.email.message}
                     </p>
                   )}
@@ -155,12 +155,12 @@ const Auth: React.FC<AuthProps> = ({ onSuccess }) => {
                       id="login-password"
                       type="password"
                       placeholder="Enter your password"
-                      className="pl-10"
+                      className="pl-10 transition-all duration-200 focus:scale-[1.01]"
                       {...loginForm.register('password')}
                     />
                   </div>
                   {loginForm.formState.errors.password && (
-                    <p className="text-sm text-destructive">
+                    <p className="text-sm text-destructive animate-fade-in">
                       {loginForm.formState.errors.password.message}
                     </p>
                   )}
@@ -170,14 +170,14 @@ const Auth: React.FC<AuthProps> = ({ onSuccess }) => {
                   <Button 
                     type="button" 
                     variant="link" 
-                    className="px-0 text-sm text-muted-foreground hover:text-primary"
+                    className="px-0 text-sm text-muted-foreground hover:text-primary transition-all duration-200 hover:scale-[1.02]"
                     onClick={handleForgotPassword}
                   >
                     Forgot your password?
                   </Button>
                 </div>
 
-                <Button type="submit" className="w-full" disabled={loading}>
+                <Button type="submit" className="w-full transition-all duration-200 hover:scale-[1.02]" disabled={loading}>
                   {loading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -200,12 +200,12 @@ const Auth: React.FC<AuthProps> = ({ onSuccess }) => {
                       id="signup-name"
                       type="text"
                       placeholder="Enter your full name"
-                      className="pl-10"
+                      className="pl-10 transition-all duration-200 focus:scale-[1.01]"
                       {...signupForm.register('name')}
                     />
                   </div>
                   {signupForm.formState.errors.name && (
-                    <p className="text-sm text-destructive">
+                    <p className="text-sm text-destructive animate-fade-in">
                       {signupForm.formState.errors.name.message}
                     </p>
                   )}
@@ -219,12 +219,12 @@ const Auth: React.FC<AuthProps> = ({ onSuccess }) => {
                       id="signup-email"
                       type="email"
                       placeholder="Enter your email"
-                      className="pl-10"
+                      className="pl-10 transition-all duration-200 focus:scale-[1.01]"
                       {...signupForm.register('email')}
                     />
                   </div>
                   {signupForm.formState.errors.email && (
-                    <p className="text-sm text-destructive">
+                    <p className="text-sm text-destructive animate-fade-in">
                       {signupForm.formState.errors.email.message}
                     </p>
                   )}
@@ -238,12 +238,12 @@ const Auth: React.FC<AuthProps> = ({ onSuccess }) => {
                       id="signup-password"
                       type="password"
                       placeholder="Create a password"
-                      className="pl-10"
+                      className="pl-10 transition-all duration-200 focus:scale-[1.01]"
                       {...signupForm.register('password')}
                     />
                   </div>
                   {signupForm.formState.errors.password && (
-                    <p className="text-sm text-destructive">
+                    <p className="text-sm text-destructive animate-fade-in">
                       {signupForm.formState.errors.password.message}
                     </p>
                   )}
@@ -257,18 +257,18 @@ const Auth: React.FC<AuthProps> = ({ onSuccess }) => {
                       id="signup-confirm-password"
                       type="password"
                       placeholder="Confirm your password"
-                      className="pl-10"
+                      className="pl-10 transition-all duration-200 focus:scale-[1.01]"
                       {...signupForm.register('confirmPassword')}
                     />
                   </div>
                   {signupForm.formState.errors.confirmPassword && (
-                    <p className="text-sm text-destructive">
+                    <p className="text-sm text-destructive animate-fade-in">
                       {signupForm.formState.errors.confirmPassword.message}
                     </p>
                   )}
                 </div>
 
-                <Button type="submit" variant="aurora-outline" size="lg" className="w-full" disabled={loading}>
+                <Button type="submit" variant="aurora-outline" size="lg" className="w-full transition-all duration-200 hover:scale-[1.02]" disabled={loading}>
                   {loading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />

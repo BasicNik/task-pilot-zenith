@@ -21,7 +21,7 @@ const STATUS_OPTIONS = [
 
 // Color mapping for status select
 const statusColorMap: Record<string, string> = {
-  "Not Started": "bg-white text-black dark:bg-neutral-900 dark:text-white border border-gray-300 dark:border-gray-600",
+  "Not Started": "bg-white text-black border-2 border-gray-300 dark:bg-neutral-900 dark:text-white dark:border-gray-600",
   "Pending": "bg-blue-500 text-white",
   "Completed": "bg-green-500 text-white",
   "Almost Done": "bg-yellow-400 text-yellow-900",
@@ -67,8 +67,8 @@ const TaskDialog: React.FC<Props> = ({ open, onOpenChange, onSave, editing }) =>
 
   // Compute select box color classes based on status
   const statusSelectClasses =
-    "border border-input rounded-md px-3 py-2 w-full focus:ring-2 focus:ring-primary focus:outline-none transition-colors " +
-    (statusColorMap[fields.status] || "");
+    "rounded-md px-3 py-2 w-full focus:ring-2 focus:ring-primary focus:outline-none transition-colors " +
+    (statusColorMap[fields.status] || "border border-input");
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

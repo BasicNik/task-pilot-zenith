@@ -21,13 +21,13 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({
       variant={variant}
       size={size}
       onClick={toggleTheme}
-      className={`transition-all duration-200 hover:scale-105 ${className}`}
+      className={`transition-all duration-300 hover:scale-105 active:scale-95 ${className}`}
       title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
     >
       {theme === 'dark' ? (
-        <Sun className="h-4 w-4" />
+        <Sun className="h-3.5 w-3.5 transition-transform duration-300 hover:rotate-12" />
       ) : (
-        <Moon className="h-4 w-4" />
+        <Moon className="h-3.5 w-3.5 transition-transform duration-300 hover:rotate-12" />
       )}
       <span className="sr-only">Toggle theme</span>
     </Button>

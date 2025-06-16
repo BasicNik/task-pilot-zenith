@@ -56,11 +56,11 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({ onBack }) => {
 
   if (emailSent) {
     return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <Card className="w-full max-w-md">
+      <div className="flex items-center justify-center min-h-[60vh] animate-fade-in">
+        <Card className="w-full max-w-md animate-scale-in">
           <CardHeader className="space-y-1 text-center">
-            <div className="mx-auto mb-4">
-              <CheckCircle className="h-12 w-12 text-green-500" />
+            <div className="mx-auto mb-4 animate-fade-in">
+              <CheckCircle className="h-10 w-10 text-green-500 transition-transform duration-200 hover:scale-105" />
             </div>
             <CardTitle className="text-2xl">Check Your Email</CardTitle>
             <CardDescription>
@@ -68,7 +68,7 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({ onBack }) => {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <Alert>
+            <Alert className="animate-fade-in">
               <CheckCircle className="h-4 w-4" />
               <AlertDescription>
                 If you don't see the email, check your spam folder or try again.
@@ -77,7 +77,7 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({ onBack }) => {
             <Button 
               onClick={onBack} 
               variant="outline" 
-              className="w-full"
+              className="w-full transition-all duration-200 hover:scale-[1.02] animate-fade-in"
             >
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Login
@@ -89,8 +89,8 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({ onBack }) => {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-[60vh]">
-      <Card className="w-full max-w-md">
+    <div className="flex items-center justify-center min-h-[60vh] animate-fade-in">
+      <Card className="w-full max-w-md animate-scale-in">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl text-center">🔐 Forgot your password?</CardTitle>
           <CardDescription className="text-center">
@@ -98,7 +98,7 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({ onBack }) => {
             Enter your email address and we'll send you a secure link to reset your password.
           </CardDescription>
           {isDemoMode && (
-            <Alert className="mt-4">
+            <Alert className="mt-4 animate-fade-in">
               <AlertTriangle className="h-4 w-4" />
               <AlertDescription>
                 Demo mode: Password reset is simulated. In production, this would send a real email.
@@ -116,25 +116,25 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({ onBack }) => {
                   id="reset-email"
                   type="email"
                   placeholder="📧 Enter your registered email"
-                  className="pl-10"
+                  className="pl-10 transition-all duration-200 focus:scale-[1.01]"
                   {...form.register('email')}
                 />
               </div>
               {form.formState.errors.email && (
-                <p className="text-sm text-destructive">
+                <p className="text-sm text-destructive animate-fade-in">
                   {form.formState.errors.email.message}
                 </p>
               )}
             </div>
 
             {error && (
-              <Alert variant="destructive">
+              <Alert variant="destructive" className="animate-fade-in">
                 <AlertTriangle className="h-4 w-4" />
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
             )}
 
-            <Button type="submit" className="w-full" disabled={loading}>
+            <Button type="submit" className="w-full transition-all duration-200 hover:scale-[1.02]" disabled={loading}>
               {loading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -151,7 +151,7 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({ onBack }) => {
               type="button" 
               onClick={onBack} 
               variant="outline" 
-              className="w-full"
+              className="w-full transition-all duration-200 hover:scale-[1.02]"
             >
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Login
