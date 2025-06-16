@@ -1,17 +1,22 @@
 # TaskPilot Zenith
 
-A modern task management application built with React, TypeScript, and Firebase authentication.
+A modern task management application built with React, TypeScript, and Firebase authentication with **persistent Firestore backend**.
 
 ## Features
 
 - ✅ **Firebase Authentication** - Secure login and signup with email/password
+- ✅ **Firestore Database** - Persistent task storage with real-time synchronization
+- ✅ **User-Specific Tasks** - Each user's tasks are isolated and secure
+- ✅ **Real-time Updates** - Changes sync instantly across devices
 - ✅ **Task Management** - Create, edit, delete, and organize tasks
-- ✅ **Dashboard** - Visual overview of your productivity
+- ✅ **Dashboard** - Visual overview of your productivity with live data
 - ✅ **Modern UI** - Built with shadcn/ui components
 - ✅ **Responsive Design** - Works on desktop and mobile
 - ✅ **Form Validation** - Robust form validation with Zod
 - ✅ **Loading States** - Smooth user experience with loading indicators
 - ✅ **Error Handling** - Comprehensive error handling and user feedback
+- ✅ **Bulk Operations** - Efficient batch updates and deletions
+- ✅ **Offline Support** - Tasks work offline and sync when reconnected
 
 ## Firebase Setup
 
@@ -20,6 +25,8 @@ A modern task management application built with React, TypeScript, and Firebase 
 1. Create a Firebase project at [https://console.firebase.google.com/](https://console.firebase.google.com/)
 2. Enable Authentication in your Firebase project
 3. Enable Email/Password authentication method
+4. **Enable Firestore Database** in your Firebase project
+5. Deploy Firestore security rules (see `firestore.rules`)
 
 ### Environment Variables
 

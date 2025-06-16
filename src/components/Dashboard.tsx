@@ -1,4 +1,3 @@
-
 import React from "react";
 import {
   PieChart,
@@ -9,6 +8,7 @@ import {
 } from "recharts";
 import type { Task } from "./types";
 import GradientBarChart from "./GradientBarChart";
+import { useTasks } from "@/hooks/useTasks";
 
 // Define aurora palette color stops
 const AURORA_GRADIENTS = [
@@ -21,36 +21,6 @@ const AURORA_GRADIENTS = [
   "#F4B5FD", // soft pink
 ];
 
-const sampleTasks: Task[] = [
-  {
-    id: 1,
-    title: "Finish TaskPilot UI",
-    description: "Design and implement main workspace",
-    dueDate: new Date(Date.now() - 86400000 * 3).toISOString(),
-    priority: "High",
-    tags: ["frontend", "design"],
-    status: "Completed",
-  },
-  {
-    id: 2,
-    title: "Write requirements doc",
-    description: "Describe features and APIs",
-    dueDate: new Date(Date.now() - 86400000 * 4).toISOString(),
-    priority: "Medium",
-    tags: ["planning"],
-    status: "Completed",
-  },
-  {
-    id: 3,
-    title: "Review pull request",
-    description: "Check styling",
-    dueDate: new Date(Date.now() - 86400000 * 1).toISOString(),
-    priority: "Low",
-    tags: ["review"],
-    status: "Pending",
-  },
-];
-
 const auroraPieColors = [
   "#22c55e",     // green (Completed)
   "#fd8a4a",     // aurora orange (Pending)
@@ -59,8 +29,47 @@ const auroraPieColors = [
 const auroraBarColor = "#da4af7"; // aurora violet for bars
 
 const Dashboard: React.FC = () => {
-  // In real app, would get tasks from API or global state
-  const tasks = sampleTasks;
+  const { tasks, loading, error } = useTasks();
+
+  // Show loading state
+  if (loading) {
+    return (
+      <div className="flex flex-col gap-8 animate-fade-in">
+        <div className="w-full bg-card border rounded-lg shadow-lg p-5">
+          <h2 className="text-2xl md:text-3xl font-bold aurora-text mb-4 text-center">
+            Dashboard
+          </h2>
+          <div className="flex items-center justify-center py-12">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Show error state
+  if (error) {
+    return (
+      <div className="flex flex-col gap-8 animate-fade-in">
+        <div className="w-full bg-card border rounded-lg shadow-lg p-5">
+          <h2 className="text-2xl md:text-3xl font-bold aurora-text mb-4 text-center">
+            Dashboard
+          </h2>
+          <div className="flex items-center justify-center py-12">
+            <div className="text-center">
+              <p className="text-destructive mb-4">{error}</p>
+              <button 
+                onClick={() => window.location.reload()}
+                className="bg-primary text-primary-foreground px-4 py-2 rounded hover:bg-primary/90"
+              >
+                Try Again
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   // Pie data
   const completed = tasks.filter((t) => t.status === "Completed").length;
@@ -155,28 +164,34 @@ const Dashboard: React.FC = () => {
             Latest Tasks
           </h2>
           <div className="flex flex-col gap-3 justify-center h-full">
-            {latestTasks.map((task) => (
-              <div
-                key={task.id}
-                className="flex flex-col justify-between bg-muted rounded-md px-4 py-3 shadow-sm"
-              >
-                <span className="font-medium text-foreground mb-2">{task.title}</span>
-                <span
-                  className={
-                    "inline-block px-3 py-1 rounded-full text-xs font-bold text-center " +
-                    (task.status === "Completed"
-                      ? "bg-green-500/10 text-green-700"
-                      : task.status === "Almost Done"
-                        ? "bg-yellow-400/10 text-yellow-600"
-                        : task.status === "Pending"
-                          ? "bg-blue-500/10 text-blue-600"
-                          : "bg-gray-700/10 text-white dark:text-white")
-                  }
-                >
-                  {task.status}
-                </span>
+            {latestTasks.length === 0 ? (
+              <div className="text-center text-muted-foreground py-8">
+                No tasks yet. Create your first task to get started!
               </div>
-            ))}
+            ) : (
+              latestTasks.map((task) => (
+                <div
+                  key={task.id}
+                  className="flex flex-col justify-between bg-muted rounded-md px-4 py-3 shadow-sm"
+                >
+                  <span className="font-medium text-foreground mb-2">{task.title}</span>
+                  <span
+                    className={
+                      "inline-block px-3 py-1 rounded-full text-xs font-bold text-center " +
+                      (task.status === "Completed"
+                        ? "bg-green-500/10 text-green-700"
+                        : task.status === "Almost Done"
+                          ? "bg-yellow-400/10 text-yellow-600"
+                          : task.status === "Pending"
+                            ? "bg-blue-500/10 text-blue-600"
+                            : "bg-gray-700/10 text-white dark:text-white")
+                    }
+                  >
+                    {task.status}
+                  </span>
+                </div>
+              ))
+            )}
           </div>
         </section>
       </div>

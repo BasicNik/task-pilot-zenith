@@ -1,8 +1,7 @@
-
 export type TaskStatus = "Not Started" | "Pending" | "Completed" | "Almost Done";
 
 export type Task = {
-  id: number;
+  id: string;
   title: string;
   description: string;
   dueDate: string;

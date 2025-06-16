@@ -10,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Loader2, Mail, Lock, User, Info } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
+import ForgotPassword from './ForgotPassword';
 
 const loginSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -33,9 +34,12 @@ interface AuthProps {
   onSuccess?: () => void;
 }
 
+type AuthView = 'login' | 'signup' | 'forgot-password';
+
 const Auth: React.FC<AuthProps> = ({ onSuccess }) => {
   const { login, signup, loading, error, isDemoMode, customUser } = useAuth();
   const [activeTab, setActiveTab] = useState('login');
+  const [authView, setAuthView] = useState<AuthView>('login');
 
   const loginForm = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
@@ -62,6 +66,25 @@ const Auth: React.FC<AuthProps> = ({ onSuccess }) => {
       console.error('Signup error:', error);
     }
   };
+
+  const handleTabChange = (value: string) => {
+    setActiveTab(value);
+    setAuthView(value as AuthView);
+  };
+
+  const handleForgotPassword = () => {
+    setAuthView('forgot-password');
+  };
+
+  const handleBackToLogin = () => {
+    setAuthView('login');
+    setActiveTab('login');
+  };
+
+  // Show forgot password view
+  if (authView === 'forgot-password') {
+    return <ForgotPassword onBack={handleBackToLogin} />;
+  }
 
   return (
     <div className="flex items-center justify-center min-h-[60vh]">
@@ -91,7 +114,7 @@ const Auth: React.FC<AuthProps> = ({ onSuccess }) => {
           )}
         </CardHeader>
         <CardContent>
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="login">Login</TabsTrigger>
               <TabsTrigger value="signup">Sign Up</TabsTrigger>
@@ -141,6 +164,17 @@ const Auth: React.FC<AuthProps> = ({ onSuccess }) => {
                       {loginForm.formState.errors.password.message}
                     </p>
                   )}
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <Button 
+                    type="button" 
+                    variant="link" 
+                    className="px-0 text-sm text-muted-foreground hover:text-primary"
+                    onClick={handleForgotPassword}
+                  >
+                    Forgot your password?
+                  </Button>
                 </div>
 
                 <Button type="submit" className="w-full" disabled={loading}>

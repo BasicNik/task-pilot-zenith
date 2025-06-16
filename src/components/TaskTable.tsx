@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Edit, Trash2, Check, Star } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -6,14 +5,14 @@ import type { Task } from "./types";
 
 interface TaskTableProps {
   tasks: Task[];
-  selected: number[];
-  onRowCheckbox: (id: number) => void;
+  selected: string[];
+  onRowCheckbox: (id: string) => void;
   onSelectAll: () => void;
   allChecked: boolean;
   onEdit: (task: Task) => void;
-  onDelete: (id: number) => void;
-  onMarkComplete: (id: number) => void;
-  onStar: (id: number) => void;
+  onDelete: (id: string) => void;
+  onMarkComplete: (id: string) => void;
+  onStar: (id: string) => void;
 }
 
 const TaskTable: React.FC<TaskTableProps> = ({

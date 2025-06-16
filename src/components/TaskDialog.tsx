@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogFooter, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import type { Task } from "./types";
 
 interface Props {
   open: boolean;
@@ -9,16 +10,6 @@ interface Props {
   onSave: (data: Omit<Task, "id">) => void;
   editing: Task | null;
 }
-
-type Task = {
-  id: number;
-  title: string;
-  description: string;
-  dueDate: string;
-  priority: "Low" | "Medium" | "High";
-  tags: string[];
-  status: "Not Started" | "Pending" | "Completed" | "Almost Done";
-};
 
 const PRIORITIES = ["Low", "Medium", "High"];
 const STATUS_OPTIONS = [

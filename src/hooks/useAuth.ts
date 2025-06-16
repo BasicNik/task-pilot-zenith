@@ -4,7 +4,8 @@ import {
   signInWithEmailAndPassword, 
   createUserWithEmailAndPassword,
   signOut,
-  onAuthStateChanged
+  onAuthStateChanged,
+  sendPasswordResetEmail
 } from 'firebase/auth';
 import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from '../lib/firebase';
@@ -46,6 +47,18 @@ const getErrorMessage = (errorCode: string): string => {
       return 'Too many failed attempts. Please try again later.';
     case 'auth/user-disabled':
       return 'This account has been disabled.';
+    case 'auth/invalid-credential':
+      return 'Invalid email or password.';
+    case 'auth/operation-not-allowed':
+      return 'This operation is not allowed. Please contact support.';
+    case 'auth/email-already-in-use':
+      return 'An account with this email already exists.';
+    case 'auth/requires-recent-login':
+      return 'This operation requires recent authentication. Please log in again.';
+    case 'auth/too-many-requests':
+      return 'Too many requests. Please try again later.';
+    case 'auth/user-not-found':
+      return 'No account found with this email address.';
     default:
       return `Authentication error: ${errorCode}`;
   }
@@ -302,6 +315,36 @@ export const useAuth = () => {
     }
   };
 
+  const resetPassword = async (email: string) => {
+    try {
+      setError(null);
+      setLoading(true);
+      
+      console.log(`🔑 Attempting password reset for email: ${email}`);
+      
+      if (!isFirebaseAvailable) {
+        // Demo mode - simulate password reset
+        console.log('🎭 Demo mode: Simulating password reset...');
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        console.log('✅ Demo password reset email sent');
+        return;
+      }
+
+      await sendPasswordResetEmail(auth, email);
+      console.log('✅ Password reset email sent successfully');
+    } catch (error: any) {
+      console.error('❌ Password reset error:', error);
+      console.error('❌ Error code:', error.code);
+      console.error('❌ Error message:', error.message);
+      
+      const userFriendlyError = getErrorMessage(error.code);
+      setError(userFriendlyError);
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return {
     user,
     customUser,
@@ -310,6 +353,7 @@ export const useAuth = () => {
     login,
     signup,
     logout,
+    resetPassword,
     isDemoMode: !isFirebaseAvailable
   };
 }; 

@@ -5,37 +5,58 @@ import TaskTable from "./TaskTable";
 import BulkActions from "./BulkActions";
 import { toast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
+import { useTasks } from "@/hooks/useTasks";
 import type { Task, TaskStatus } from "./types";
 
-const initialTasks: Task[] = [
-  {
-    id: 1,
-    title: "Finish TaskPilot UI",
-    description: "Design and implement main workspace",
-    dueDate: new Date(Date.now() + 86400000 * 2).toISOString(),
-    priority: "High",
-    tags: ["frontend", "design"],
-    status: "Pending",
-    starred: false,
-  },
-  {
-    id: 2,
-    title: "Write requirements doc",
-    description: "Describe features and APIs",
-    dueDate: new Date(Date.now() + 86400000 * 4).toISOString(),
-    priority: "Medium",
-    tags: ["planning"],
-    status: "Completed",
-    starred: false,
-  },
-];
-
 const TaskList: React.FC = () => {
-  const [tasks, setTasks] = useState<Task[]>(initialTasks);
+  const { tasks, loading, error, addTask, updateTask, deleteTask, bulkDeleteTasks, bulkUpdateTasks } = useTasks();
   const [filter, setFilter] = useState<{ status?: string; priority?: string; tags?: string[], date?: string }>({});
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editing, setEditing] = useState<Task | null>(null);
-  const [selected, setSelected] = useState<number[]>([]);
+  const [selected, setSelected] = useState<string[]>([]);
+
+  // Show loading state
+  if (loading) {
+    return (
+      <div className="flex flex-col gap-4 md:gap-6">
+        <div className="flex flex-col md:flex-row justify-between md:items-end gap-4">
+          <div>
+            <h2 className="text-2xl font-bold mb-0">Your Tasks</h2>
+            <p className="text-muted-foreground mb-2 text-sm">
+              Loading your tasks...
+            </p>
+          </div>
+        </div>
+        <div className="flex items-center justify-center py-12">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        </div>
+      </div>
+    );
+  }
+
+  // Show error state
+  if (error) {
+    return (
+      <div className="flex flex-col gap-4 md:gap-6">
+        <div className="flex flex-col md:flex-row justify-between md:items-end gap-4">
+          <div>
+            <h2 className="text-2xl font-bold mb-0">Your Tasks</h2>
+            <p className="text-muted-foreground mb-2 text-sm">
+              Error loading tasks
+            </p>
+          </div>
+        </div>
+        <div className="flex items-center justify-center py-12">
+          <div className="text-center">
+            <p className="text-destructive mb-4">{error}</p>
+            <Button onClick={() => window.location.reload()}>
+              Try Again
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   // Filtering
   const filtered = tasks.filter((task) => {
@@ -50,87 +71,145 @@ const TaskList: React.FC = () => {
   const sorted = [...filtered].sort((a, b) => (b.starred ? 1 : 0) - (a.starred ? 1 : 0));
 
   // CRUD Handlers
-  const handleAdd = (data: Omit<Task, "id">) => {
-    setTasks((prev) => [
-      {
-        ...data,
-        id: Date.now(),
-        starred: false,
-      },
-      ...prev,
-    ]);
-    setDialogOpen(false);
-    toast({ title: "Task Added!", description: data.title });
+  const handleAdd = async (data: Omit<Task, "id">) => {
+    const result = await addTask(data);
+    if (result) {
+      setDialogOpen(false);
+      toast({ title: "Task Added!", description: data.title });
+    } else {
+      toast({ 
+        title: "Error", 
+        description: "Failed to add task. Please try again.",
+        variant: "destructive"
+      });
+    }
   };
 
-  const handleEdit = (data: Omit<Task, "id">, id: number) => {
-    setTasks((prev) => prev.map((t) => (t.id === id ? { ...t, ...data } : t)));
-    setDialogOpen(false);
-    toast({ title: "Task Updated!", description: data.title });
+  const handleEdit = async (data: Omit<Task, "id">, id: string) => {
+    const success = await updateTask(id, data);
+    if (success) {
+      setDialogOpen(false);
+      toast({ title: "Task Updated!", description: data.title });
+    } else {
+      toast({ 
+        title: "Error", 
+        description: "Failed to update task. Please try again.",
+        variant: "destructive"
+      });
+    }
   };
 
-  const handleDelete = (id: number) => {
+  const handleDelete = async (id: string) => {
     const t = tasks.find((t) => t.id === id);
-    setTasks((prev) => prev.filter((t) => t.id !== id));
-    toast({ title: "Task Deleted", description: t?.title });
-    setSelected((prev) => prev.filter(sid => sid !== id));
+    const success = await deleteTask(id);
+    if (success) {
+      toast({ title: "Task Deleted", description: t?.title });
+      setSelected((prev) => prev.filter(sid => sid !== id));
+    } else {
+      toast({ 
+        title: "Error", 
+        description: "Failed to delete task. Please try again.",
+        variant: "destructive"
+      });
+    }
   };
 
-  const handleBulkDelete = () => {
-    setTasks((prev) => prev.filter((t) => !selected.includes(t.id)));
-    toast({ title: "Tasks Deleted", description: `${selected.length} tasks removed.` });
-    setSelected([]);
+  const handleBulkDelete = async () => {
+    const success = await bulkDeleteTasks(selected);
+    if (success) {
+      toast({ title: "Tasks Deleted", description: `${selected.length} tasks removed.` });
+      setSelected([]);
+    } else {
+      toast({ 
+        title: "Error", 
+        description: "Failed to delete tasks. Please try again.",
+        variant: "destructive"
+      });
+    }
   };
 
-  const handleBulkComplete = () => {
-    setTasks((prev) =>
-      prev.map((t) =>
-        selected.includes(t.id) ? { ...t, status: "Completed" } : t
-      )
-    );
-    toast({ title: "Tasks Completed!", description: `${selected.length} tasks marked as complete.` });
-    setSelected([]);
+  const handleBulkComplete = async () => {
+    const success = await bulkUpdateTasks(selected, { status: "Completed" });
+    if (success) {
+      toast({ title: "Tasks Completed!", description: `${selected.length} tasks marked as complete.` });
+      setSelected([]);
+    } else {
+      toast({ 
+        title: "Error", 
+        description: "Failed to update tasks. Please try again.",
+        variant: "destructive"
+      });
+    }
   };
 
-  const handleBulkStar = () => {
-    setTasks((prev) => prev.map((t) => selected.includes(t.id) ? { ...t, starred: true } : t));
-    toast({ title: "Starred!", description: `${selected.length} tasks starred.` });
-    setSelected([]);
+  const handleBulkStar = async () => {
+    const success = await bulkUpdateTasks(selected, { starred: true });
+    if (success) {
+      toast({ title: "Starred!", description: `${selected.length} tasks starred.` });
+      setSelected([]);
+    } else {
+      toast({ 
+        title: "Error", 
+        description: "Failed to star tasks. Please try again.",
+        variant: "destructive"
+      });
+    }
   };
 
-  const handleBulkStatusChange = (status: TaskStatus) => {
-    setTasks((prev) =>
-      prev.map((t) =>
-        selected.includes(t.id) ? { ...t, status } : t
-      )
-    );
-    toast({ title: "Status Updated", description: `Status set for ${selected.length} tasks` });
-    setSelected([]);
+  const handleBulkStatusChange = async (status: TaskStatus) => {
+    const success = await bulkUpdateTasks(selected, { status });
+    if (success) {
+      toast({ title: "Status Updated", description: `Status set for ${selected.length} tasks` });
+      setSelected([]);
+    } else {
+      toast({ 
+        title: "Error", 
+        description: "Failed to update task status. Please try again.",
+        variant: "destructive"
+      });
+    }
   };
 
-  const handleMarkComplete = (id: number) => {
-    setTasks((prev) => prev.map((t) => (t.id === id ? { ...t, status: "Completed" } : t)));
-    const t = tasks.find((t) => t.id === id);
-    toast({ title: "Task Completed!", description: t?.title });
-    setSelected((prev) => prev.filter(sid => sid !== id));
+  const handleMarkComplete = async (id: string) => {
+    const success = await updateTask(id, { status: "Completed" });
+    if (success) {
+      const t = tasks.find((t) => t.id === id);
+      toast({ title: "Task Completed!", description: t?.title });
+      setSelected((prev) => prev.filter(sid => sid !== id));
+    } else {
+      toast({ 
+        title: "Error", 
+        description: "Failed to complete task. Please try again.",
+        variant: "destructive"
+      });
+    }
   };
 
   // Bulk selection
   const allChecked = sorted.length > 0 && sorted.every((t) => selected.includes(t.id));
   const handleSelectAll = () => setSelected(allChecked ? [] : sorted.map(t => t.id));
-  const handleRowCheckbox = (id: number) =>
+  const handleRowCheckbox = (id: string) =>
     setSelected((prev) =>
       prev.includes(id) ? prev.filter((sid) => sid !== id) : [...prev, id]
     );
 
   // Star handler per task
-  const handleStar = (id: number) => {
-    setTasks((prev) => prev.map((task) => task.id === id ? { ...task, starred: !task.starred } : task));
-    const t = tasks.find((t) => t.id === id);
-    toast({
-      title: !t?.starred ? "Task Starred" : "Task Unstarred",
-      description: t?.title,
-    });
+  const handleStar = async (id: string) => {
+    const task = tasks.find((t) => t.id === id);
+    const newStarredValue = !task?.starred;
+    const success = await updateTask(id, { starred: newStarredValue });
+    if (success) {
+      toast({
+        title: newStarredValue ? "Task Starred" : "Task Unstarred",
+        description: task?.title,
+      });
+    } else {
+      toast({ 
+        title: "Error", 
+        description: "Failed to update task. Please try again.",
+        variant: "destructive"
+      });
+    }
   };
 
   return (
