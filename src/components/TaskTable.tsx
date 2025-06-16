@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Edit, Trash2, Check, Star } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -30,21 +31,21 @@ const TaskTable: React.FC<TaskTableProps> = ({
     <table className="min-w-[640px] w-full text-sm md:text-base">
       <thead>
         <tr className="bg-muted text-muted-foreground">
-          <th className="px-2 md:px-3 py-2 min-w-[36px]">
+          <th className="px-2 md:px-3 py-2 min-w-[36px] text-left">
             <Checkbox
               checked={allChecked}
               onCheckedChange={onSelectAll}
               aria-label="Select all tasks"
             />
           </th>
-          <th className="px-2 md:px-3 py-2 min-w-[46px]">Star</th>
-          <th className="px-2 md:px-4 py-2 min-w-[120px]">Title</th>
-          <th className="px-2 min-w-[120px]">Description</th>
-          <th className="px-2 min-w-[70px]">Due</th>
-          <th className="px-2 min-w-[70px]">Priority</th>
-          <th className="px-2 min-w-[65px]">Tags</th>
-          <th className="px-2 min-w-[80px]">Status</th>
-          <th className="px-2 min-w-[90px] w-[88px]"></th>
+          <th className="px-2 md:px-3 py-2 min-w-[46px] text-left">Star</th>
+          <th className="px-2 md:px-4 py-2 min-w-[120px] text-left">Title</th>
+          <th className="px-2 min-w-[120px] text-left">Description</th>
+          <th className="px-2 min-w-[70px] text-left">Due</th>
+          <th className="px-2 min-w-[70px] text-left">Priority</th>
+          <th className="px-2 min-w-[65px] text-left">Tags</th>
+          <th className="px-2 min-w-[80px] text-left">Status</th>
+          <th className="px-2 min-w-[90px] w-[88px] text-left">Actions</th>
         </tr>
       </thead>
       <tbody>

@@ -224,9 +224,8 @@ const TaskList: React.FC = () => {
         </div>
         <Button
           onClick={() => { setDialogOpen(true); setEditing(null); }}
-          variant="aurora-outline"
+          className="aurora-outline-btn aurora-glow w-full md:w-56"
           size="sm"
-          className="aurora-glow w-full md:w-56 shadow-[0_0_0_2px_#6b0880] dark:shadow-[0_0_0_2px_#374151]"
         >
           + New Task
         </Button>
