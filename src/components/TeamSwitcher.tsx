@@ -47,7 +47,7 @@ export function TeamSwitcher({
                 <activeTeam.logo className="size-4" />
               </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">
+                <span className="truncate font-semibold text-xs sm:text-sm">
                   {activeTeam.name}
                 </span>
                 <span className="truncate text-xs">{activeTeam.plan}</span>
@@ -73,7 +73,7 @@ export function TeamSwitcher({
                 <div className="flex size-6 items-center justify-center rounded-sm border">
                   <team.logo className="size-4 shrink-0" />
                 </div>
-                {team.name}
+                <span className="truncate">{team.name}</span>
                 <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
               </DropdownMenuItem>
             ))}

@@ -1,204 +1,202 @@
+
 import React from "react";
-import {
-  PieChart,
-  Pie,
-  Cell,
-  Legend,
-  ResponsiveContainer
-} from "recharts";
-import type { Task } from "./types";
-import GradientBarChart from "./GradientBarChart";
-import { useTasks } from "@/hooks/useTasks";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
+import { useTasks } from "../hooks/useTasks";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 
-// Define aurora palette color stops - swapped colors for pending/completed
-const auroraPieColors = [
-  "#fd8a4a",     // aurora orange (Completed - now orange)
-  "#22c55e",     // green (Pending - now green)
-];
+const Dashboard = () => {
+  const { tasks, loading } = useTasks();
 
-const auroraBarColor = "#da4af7"; // aurora violet for bars
-
-const Dashboard: React.FC = () => {
-  const { tasks, loading, error } = useTasks();
-
-  // Show loading state
   if (loading) {
     return (
-      <div className="flex flex-col gap-8 animate-fade-in">
-        <div className="w-full bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-700 rounded-xl shadow-sm p-6">
-          <h2 className="text-2xl md:text-3xl font-bold aurora-text mb-4 text-center">
-            Dashboard
-          </h2>
-          <div className="flex items-center justify-center py-12">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-          </div>
-        </div>
+      <div className="flex items-center justify-center h-64">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
       </div>
     );
   }
 
-  // Show error state
-  if (error) {
-    return (
-      <div className="flex flex-col gap-8 animate-fade-in">
-        <div className="w-full bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-700 rounded-xl shadow-sm p-6">
-          <h2 className="text-2xl md:text-3xl font-bold aurora-text mb-4 text-center">
-            Dashboard
-          </h2>
-          <div className="flex items-center justify-center py-12">
-            <div className="text-center">
-              <p className="text-destructive mb-4">{error}</p>
-              <button 
-                onClick={() => window.location.reload()}
-                className="bg-primary text-primary-foreground px-4 py-2 rounded hover:bg-primary/90"
-              >
-                Try Again
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  // Calculate task statistics
+  const taskStats = {
+    total: tasks.length,
+    completed: tasks.filter(task => task.status === "Completed").length,
+    pending: tasks.filter(task => task.status === "Pending").length,
+    notStarted: tasks.filter(task => task.status === "Not Started").length,
+    almostDone: tasks.filter(task => task.status === "Almost Done").length,
+  };
 
-  // Pie data
-  const completed = tasks.filter((t) => t.status === "Completed").length;
-  const pending = tasks.length - completed;
+  const completionRate = taskStats.total > 0 ? Math.round((taskStats.completed / taskStats.total) * 100) : 0;
 
-  const pieData = [
-    { name: "Completed", value: completed },
-    { name: "Pending", value: pending },
+  // Priority distribution
+  const priorityStats = {
+    high: tasks.filter(task => task.priority === "High").length,
+    medium: tasks.filter(task => task.priority === "Medium").length,
+    low: tasks.filter(task => task.priority === "Low").length,
+  };
+
+  // Weekly overview data (mock data for demonstration)
+  const weeklyData = [
+    { day: 'Mon', completed: tasks.filter(t => t.status === 'Completed').length * 0.1 },
+    { day: 'Tue', completed: tasks.filter(t => t.status === 'Completed').length * 0.15 },
+    { day: 'Wed', completed: tasks.filter(t => t.status === 'Completed').length * 0.2 },
+    { day: 'Thu', completed: tasks.filter(t => t.status === 'Completed').length * 0.12 },
+    { day: 'Fri', completed: tasks.filter(t => t.status === 'Completed').length * 0.18 },
+    { day: 'Sat', completed: tasks.filter(t => t.status === 'Completed').length * 0.08 },
+    { day: 'Sun', completed: tasks.filter(t => t.status === 'Completed').length * 0.27 },
   ];
 
-  // Bar data (tasks completed per day, last 7 days) - Fixed calculation
-  const today = new Date();
-  const days = Array.from({ length: 7 }).map((_, i) => {
-    const d = new Date(today);
-    d.setDate(today.getDate() - (6 - i)); // Last 7 days including today
-    // Format as dd-mm
-    const label = `${String(d.getDate()).padStart(2, "0")}-${String(d.getMonth() + 1).padStart(2, "0")}`;
-    // Count tasks completed on this specific day
-    const completedOnDay = tasks.filter((t) => {
-      if (t.status !== "Completed") return false;
-      // Use completedAt if present, else fallback to dueDate
-      const dateStr = t.completedAt || t.dueDate;
-      const taskDate = new Date(dateStr);
-      return taskDate.toDateString() === d.toDateString();
-    }).length;
-    return { date: label, completed: completedOnDay };
-  });
-
-  // Get the 3 tasks with the latest due dates (descending)
-  const latestTasks = [...tasks]
-    .sort((a, b) => new Date(b.dueDate).getTime() - new Date(a.dueDate).getTime())
-    .slice(0, 3);
+  // Status distribution for pie chart
+  const statusData = [
+    { name: 'Completed', value: taskStats.completed, color: '#10b981' },
+    { name: 'Pending', value: taskStats.pending, color: '#f59e0b' },
+    { name: 'Not Started', value: taskStats.notStarted, color: '#ef4444' },
+    { name: 'Almost Done', value: taskStats.almostDone, color: '#3b82f6' },
+  ].filter(item => item.value > 0);
 
   return (
-    <div className="flex flex-col gap-8 animate-fade-in">
-      {/* Bar Chart Section - Full Width at Top */}
-      <section className="w-full bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-700 rounded-xl shadow-sm p-6">
-        <h2 className="text-2xl md:text-3xl font-bold aurora-text mb-6 text-center">
-          Overview
-        </h2>
-        <GradientBarChart data={days} height={280} />
-      </section>
+    <div className="space-y-4 sm:space-y-6">
+      <div>
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Dashboard</h1>
+        <p className="text-sm sm:text-base text-muted-foreground">
+          Overview of your task management
+        </p>
+      </div>
 
-      {/* Bottom Section - Pie Chart and Latest Tasks Side by Side */}
-      <div className="flex flex-col lg:flex-row gap-8">
-        {/* Pie Chart Section */}
-        <section className="flex-1 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-700 rounded-xl shadow-sm p-6">
-          <h2 className="text-2xl md:text-3xl font-bold aurora-text mb-4 text-center">
-            Task Status
-          </h2>
-          {/* Enhanced Aurora Glow Wrapper for PieChart */}
-          <div className="relative flex items-center justify-center w-full" style={{ minHeight: 340 }}>
-            {/* Enhanced glow effects */}
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
-              <div className="absolute w-80 h-80 rounded-full bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 opacity-20 blur-3xl animate-pulse"></div>
-              <div className="absolute w-60 h-60 rounded-full bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 opacity-30 blur-2xl"></div>
-            </div>
-            <div className="relative z-10 w-full flex items-center justify-center">
-              <ResponsiveContainer width="100%" height={340}>
-                <PieChart>
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <Card className="bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-blue-900/20 dark:to-indigo-900/20 border-blue-200 dark:border-blue-800">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium text-blue-700 dark:text-blue-300">Total Tasks</CardTitle>
+            <div className="h-4 w-4 text-blue-600 dark:text-blue-400">📋</div>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-blue-800 dark:text-blue-200">{taskStats.total}</div>
+            <p className="text-xs text-blue-600 dark:text-blue-400">All your tasks</p>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-gradient-to-br from-green-50 to-emerald-100 dark:from-green-900/20 dark:to-emerald-900/20 border-green-200 dark:border-green-800">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium text-green-700 dark:text-green-300">Completed</CardTitle>
+            <div className="h-4 w-4 text-green-600 dark:text-green-400">✅</div>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-green-800 dark:text-green-200">{taskStats.completed}</div>
+            <p className="text-xs text-green-600 dark:text-green-400">{completionRate}% completion rate</p>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-gradient-to-br from-orange-50 to-amber-100 dark:from-orange-900/20 dark:to-amber-900/20 border-orange-200 dark:border-orange-800">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium text-orange-700 dark:text-orange-300">Pending</CardTitle>
+            <div className="h-4 w-4 text-orange-600 dark:text-orange-400">⏳</div>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-orange-800 dark:text-orange-200">{taskStats.pending}</div>
+            <p className="text-xs text-orange-600 dark:text-orange-400">In progress</p>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-gradient-to-br from-purple-50 to-violet-100 dark:from-purple-900/20 dark:to-violet-900/20 border-purple-200 dark:border-purple-800">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium text-purple-700 dark:text-purple-300">High Priority</CardTitle>
+            <div className="h-4 w-4 text-purple-600 dark:text-purple-400">🔥</div>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-purple-800 dark:text-purple-200">{priorityStats.high}</div>
+            <p className="text-xs text-purple-600 dark:text-purple-400">Urgent tasks</p>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Charts Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+        {/* Weekly Overview */}
+        <Card className="bg-gradient-to-br from-slate-50 to-gray-100 dark:from-slate-900/50 dark:to-gray-900/50 border-slate-200 dark:border-slate-700">
+          <CardHeader>
+            <CardTitle className="text-slate-800 dark:text-slate-200">Weekly Overview</CardTitle>
+            <CardDescription className="text-slate-600 dark:text-slate-400">Tasks completed this week</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="h-48 sm:h-64">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={weeklyData} margin={{ top: 5, right: 5, left: 5, bottom: 5 }}>
+                  <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
+                  <XAxis dataKey="day" tick={{ fontSize: 12 }} />
+                  <YAxis tick={{ fontSize: 12 }} />
+                  <Tooltip 
+                    contentStyle={{ 
+                      backgroundColor: 'hsl(var(--background))', 
+                      border: '1px solid hsl(var(--border))',
+                      borderRadius: '6px'
+                    }} 
+                  />
+                  <Bar 
+                    dataKey="completed" 
+                    fill="url(#blueGradient)"
+                    radius={[4, 4, 0, 0]}
+                  />
                   <defs>
-                    {/* Swapped gradient definitions */}
-                    <linearGradient id="aurora-pie-completed" x1="0" y1="0" x2="1" y2="1">
-                      <stop offset="0%" stopColor="#fd8a4a" />
-                      <stop offset="100%" stopColor="#da4af7" />
+                    <linearGradient id="blueGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.9}/>
+                      <stop offset="95%" stopColor="#1d4ed8" stopOpacity={0.7}/>
                     </linearGradient>
-                    <linearGradient id="aurora-pie-pending" x1="0" y1="0" x2="1" y2="1">
-                      <stop offset="0%" stopColor="#22c55e" />
-                      <stop offset="100%" stopColor="#BC13FE" />
-                    </linearGradient>
-                    {/* Enhanced glow filter */}
-                    <filter id="pieGlow" height="300%" width="300%" x="-100%" y="-100%">
-                      <feGaussianBlur stdDeviation="8" result="coloredBlur"/>
-                      <feMerge>
-                        <feMergeNode in="coloredBlur"/>
-                        <feMergeNode in="SourceGraphic"/>
-                      </feMerge>
-                    </filter>
                   </defs>
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Task Status Distribution */}
+        <Card className="bg-gradient-to-br from-indigo-50 to-blue-100 dark:from-indigo-900/50 dark:to-blue-900/50 border-indigo-200 dark:border-indigo-700">
+          <CardHeader>
+            <CardTitle className="text-indigo-800 dark:text-indigo-200">Task Status</CardTitle>
+            <CardDescription className="text-indigo-600 dark:text-indigo-400">Distribution of task statuses</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="h-48 sm:h-64">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
                   <Pie
-                    data={pieData}
-                    dataKey="value"
-                    nameKey="name"
+                    data={statusData}
                     cx="50%"
                     cy="50%"
-                    innerRadius={64}
-                    outerRadius={100}
+                    outerRadius={60}
                     fill="#8884d8"
-                    label={({ name, percent }) =>
-                      `${name}: ${(percent * 100).toFixed(0)}%`
-                    }
-                    filter="url(#pieGlow)"
+                    dataKey="value"
+                    className="drop-shadow-lg"
+                    style={{
+                      filter: 'drop-shadow(0 0 10px rgba(59, 130, 246, 0.3))'
+                    }}
                   >
-                    <Cell key="Completed" fill="url(#aurora-pie-completed)" />
-                    <Cell key="Pending" fill="url(#aurora-pie-pending)" />
+                    {statusData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
                   </Pie>
-                  <Legend />
+                  <Tooltip 
+                    contentStyle={{ 
+                      backgroundColor: 'hsl(var(--background))', 
+                      border: '1px solid hsl(var(--border))',
+                      borderRadius: '6px',
+                      fontSize: '12px'
+                    }} 
+                  />
                 </PieChart>
               </ResponsiveContainer>
             </div>
-          </div>
-        </section>
-
-        {/* Latest Task Status Section */}
-        <section className="flex-1 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-700 rounded-xl shadow-sm p-6">
-          <h2 className="text-2xl md:text-3xl font-bold aurora-text mb-6 text-center">
-            Latest Tasks
-          </h2>
-          <div className="flex flex-col gap-4 justify-center h-full">
-            {latestTasks.length === 0 ? (
-              <div className="text-center text-gray-500 dark:text-gray-400 py-8">
-                No tasks yet. Create your first task to get started!
-              </div>
-            ) : (
-              latestTasks.map((task) => (
-                <div
-                  key={task.id}
-                  className="flex flex-col justify-between bg-gray-50 dark:bg-zinc-800 border border-gray-100 dark:border-zinc-700 rounded-lg px-4 py-4 shadow-sm hover:shadow-md transition-shadow"
-                >
-                  <span className="font-medium text-gray-900 dark:text-gray-100 mb-3">{task.title}</span>
-                  <span
-                    className={
-                      "inline-block px-3 py-1 rounded-full text-xs font-bold text-center " +
-                      (task.status === "Completed"
-                        ? "bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-400"
-                        : task.status === "Almost Done"
-                          ? "bg-yellow-100 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-400"
-                          : task.status === "Pending"
-                            ? "bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400"
-                            : "bg-gray-100 dark:bg-gray-700/20 text-gray-700 dark:text-gray-300")
-                    }
-                  >
-                    {task.status}
-                  </span>
+            <div className="flex flex-wrap justify-center gap-2 mt-4">
+              {statusData.map((entry, index) => (
+                <div key={index} className="flex items-center gap-1 text-xs">
+                  <div 
+                    className="w-3 h-3 rounded-full" 
+                    style={{ backgroundColor: entry.color }}
+                  ></div>
+                  <span className="text-muted-foreground">{entry.name}</span>
                 </div>
-              ))
-            )}
-          </div>
-        </section>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

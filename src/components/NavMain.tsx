@@ -1,3 +1,4 @@
+
 import { ChevronRight, type LucideIcon } from "lucide-react"
 
 import {
@@ -27,6 +28,7 @@ export function NavMain({
     items?: {
       title: string
       url: string
+      icon?: LucideIcon
     }[]
   }[]
 }) {
@@ -45,7 +47,7 @@ export function NavMain({
               <CollapsibleTrigger asChild>
                 <SidebarMenuButton tooltip={item.title}>
                   {item.icon && <item.icon className="w-4 h-4 mr-2 text-muted-foreground" />}
-                  <span className="text-xs font-normal">{item.title}</span>
+                  <span className="text-xs sm:text-sm font-normal">{item.title}</span>
                   <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
                 </SidebarMenuButton>
               </CollapsibleTrigger>

@@ -1,3 +1,4 @@
+
 import {
   FolderOpen,
   Forward,
@@ -46,7 +47,7 @@ export function NavProjects({
                 <SidebarMenuButton asChild>
                   <a href={item.url}>
                     <item.icon className="w-4 h-4 mr-2 text-muted-foreground" />
-                    <span className="text-xs font-normal">{item.name}</span>
+                    <span className="text-xs sm:text-sm font-normal truncate">{item.name}</span>
                   </a>
                 </SidebarMenuButton>
               </TooltipTrigger>
@@ -88,7 +89,7 @@ export function NavProjects({
             <TooltipTrigger asChild>
               <SidebarMenuButton className="text-sidebar-foreground/70">
                 <MoreHorizontal className="text-sidebar-foreground/70 w-4 h-4 mr-2" />
-                <span className="text-xs font-normal">More</span>
+                <span className="text-xs sm:text-sm font-normal">More</span>
               </SidebarMenuButton>
             </TooltipTrigger>
             <TooltipContent side="right" align="center">

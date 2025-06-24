@@ -40,12 +40,12 @@ const Index = () => {
     return (
       <div className="min-h-screen bg-background flex flex-col">
         <AuroraBanner />
-        <main className="flex-1 flex flex-col items-center justify-center px-4 sm:px-6">
-          <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-6">
-            <div className="flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
-              <h1 className="text-3xl sm:text-4xl font-bold text-foreground">Welcome to TaskPilot</h1>
+        <main className="flex-1 flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-6 w-full max-w-md">
+            <div className="flex flex-col items-center gap-4 text-center">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground">Welcome to TaskPilot</h1>
             </div>
-            <p className="text-base sm:text-lg text-muted-foreground text-center max-w-md">
+            <p className="text-sm sm:text-base lg:text-lg text-muted-foreground text-center">
               A modern task management application with beautiful dark mode support
             </p>
             <Auth onSuccess={() => setView("tasks")} />
@@ -62,11 +62,11 @@ const Index = () => {
         <div className="min-h-screen flex w-full">
           <AppSidebar />
           <SidebarInset>
-            <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
-              <div className="flex items-center gap-2 px-4">
+            <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12 border-b border-border/40">
+              <div className="flex items-center gap-2 px-3 sm:px-4 w-full">
                 <SidebarTrigger className="-ml-1" />
                 <Separator orientation="vertical" className="mr-2 h-4" />
-                <Breadcrumb>
+                <Breadcrumb className="hidden sm:block">
                   <BreadcrumbList>
                     <BreadcrumbItem className="hidden md:block">
                       <BreadcrumbLink href="#" onClick={() => setView("tasks")}>
@@ -81,31 +81,31 @@ const Index = () => {
                     </BreadcrumbItem>
                   </BreadcrumbList>
                 </Breadcrumb>
-              </div>
-              <div className="ml-auto flex items-center gap-2 px-4">
-                <button
-                  onClick={() => setView("tasks")}
-                  className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
-                    view === "tasks" 
-                      ? "bg-primary text-primary-foreground" 
-                      : "hover:bg-muted"
-                  }`}
-                >
-                  Tasks
-                </button>
-                <button
-                  onClick={() => setView("dashboard")}
-                  className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
-                    view === "dashboard" 
-                      ? "bg-primary text-primary-foreground" 
-                      : "hover:bg-muted"
-                  }`}
-                >
-                  Dashboard
-                </button>
+                <div className="ml-auto flex items-center gap-1 sm:gap-2">
+                  <button
+                    onClick={() => setView("tasks")}
+                    className={`px-2 sm:px-3 py-1 rounded-md text-xs sm:text-sm font-medium transition-colors ${
+                      view === "tasks" 
+                        ? "bg-primary text-primary-foreground" 
+                        : "hover:bg-muted"
+                    }`}
+                  >
+                    Tasks
+                  </button>
+                  <button
+                    onClick={() => setView("dashboard")}
+                    className={`px-2 sm:px-3 py-1 rounded-md text-xs sm:text-sm font-medium transition-colors ${
+                      view === "dashboard" 
+                        ? "bg-primary text-primary-foreground" 
+                        : "hover:bg-muted"
+                    }`}
+                  >
+                    Dashboard
+                  </button>
+                </div>
               </div>
             </header>
-            <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+            <div className="flex flex-1 flex-col gap-4 p-3 sm:p-4 pt-0">
               {view === "tasks" && <TaskList />}
               {view === "dashboard" && <Dashboard />}
             </div>
