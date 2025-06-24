@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo } from "react";
 import { Button } from "./ui/button";
 import { Plus, Search } from "lucide-react";
@@ -131,10 +130,12 @@ const TaskList = () => {
         </div>
         <div className="flex flex-col sm:flex-row gap-2 lg:w-auto w-full">
           <TaskFilters
-            statusFilter={statusFilter}
-            onStatusFilterChange={setStatusFilter}
-            priorityFilter={priorityFilter}
-            onPriorityFilterChange={setPriorityFilter}
+            todoList={tasks}
+            onChange={({ status, priority, tags }) => {
+              if (status) setStatusFilter(status as TaskStatus | "All");
+              if (priority) setPriorityFilter(priority as "All" | "Low" | "Medium" | "High");
+              // You can handle tags here if needed
+            }}
           />
         </div>
       </div>
@@ -151,11 +152,11 @@ const TaskList = () => {
         <div className="overflow-x-auto">
           <TaskTable
             tasks={filteredTasks}
-            selectedTasks={selectedTasks}
-            onSelectTask={handleSelectTask}
+            selected={selectedTasks}
+            onRowCheckbox={handleSelectTask}
             onSelectAll={handleSelectAll}
-            onEditTask={handleEditTask}
-            onDeleteTask={handleDeleteTask}
+            onEdit={handleEditTask}
+            onDelete={handleDeleteTask}
             onToggleComplete={async (taskId: string, completed: boolean) => {
               const task = tasks.find(t => t.id === taskId);
               if (task) {
