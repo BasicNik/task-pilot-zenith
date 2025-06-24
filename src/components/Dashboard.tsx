@@ -1,3 +1,4 @@
+
 import React from "react";
 import {
   PieChart,
@@ -10,20 +11,10 @@ import type { Task } from "./types";
 import GradientBarChart from "./GradientBarChart";
 import { useTasks } from "@/hooks/useTasks";
 
-// Define aurora palette color stops
-const AURORA_GRADIENTS = [
-  "#da4af7", // violet/pink
-  "#fd6a6a", // bright red-orange
-  "#fd8a4a", // orange
-  "#FB697A", // magenta/red
-  "#BC13FE", // purple
-  "#E025BE", // magenta
-  "#F4B5FD", // soft pink
-];
-
+// Define aurora palette color stops - swapped colors for pending/completed
 const auroraPieColors = [
-  "#22c55e",     // green (Completed)
-  "#fd8a4a",     // aurora orange (Pending)
+  "#fd8a4a",     // aurora orange (Completed - now orange)
+  "#22c55e",     // green (Pending - now green)
 ];
 
 const auroraBarColor = "#da4af7"; // aurora violet for bars
@@ -116,24 +107,34 @@ const Dashboard: React.FC = () => {
           <h2 className="text-2xl md:text-3xl font-bold aurora-text mb-2 text-center">
             Task Status
           </h2>
-          {/* Aurora Glow Wrapper for PieChart */}
+          {/* Enhanced Aurora Glow Wrapper for PieChart */}
           <div className="relative flex items-center justify-center w-full" style={{ minHeight: 340 }}>
+            {/* Enhanced glow effects */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
-              {/* Glow effect */}
-              <div className="aurora-glow rounded-full blur-2xl opacity-80 w-72 h-72" />
+              <div className="absolute w-80 h-80 rounded-full bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 opacity-20 blur-3xl animate-pulse"></div>
+              <div className="absolute w-60 h-60 rounded-full bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 opacity-30 blur-2xl"></div>
             </div>
             <div className="relative z-10 w-full flex items-center justify-center">
               <ResponsiveContainer width="100%" height={340}>
                 <PieChart>
                   <defs>
+                    {/* Swapped gradient definitions */}
                     <linearGradient id="aurora-pie-completed" x1="0" y1="0" x2="1" y2="1">
-                      <stop offset="0%" stopColor="#22c55e" />
-                      <stop offset="100%" stopColor="#BC13FE" />
-                    </linearGradient>
-                    <linearGradient id="aurora-pie-pending" x1="0" y1="0" x2="1" y2="1">
                       <stop offset="0%" stopColor="#fd8a4a" />
                       <stop offset="100%" stopColor="#da4af7" />
                     </linearGradient>
+                    <linearGradient id="aurora-pie-pending" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0%" stopColor="#22c55e" />
+                      <stop offset="100%" stopColor="#BC13FE" />
+                    </linearGradient>
+                    {/* Enhanced glow filter */}
+                    <filter id="pieGlow" height="300%" width="300%" x="-100%" y="-100%">
+                      <feGaussianBlur stdDeviation="8" result="coloredBlur"/>
+                      <feMerge>
+                        <feMergeNode in="coloredBlur"/>
+                        <feMergeNode in="SourceGraphic"/>
+                      </feMerge>
+                    </filter>
                   </defs>
                   <Pie
                     data={pieData}
@@ -147,6 +148,7 @@ const Dashboard: React.FC = () => {
                     label={({ name, percent }) =>
                       `${name}: ${(percent * 100).toFixed(0)}%`
                     }
+                    filter="url(#pieGlow)"
                   >
                     <Cell key="Completed" fill="url(#aurora-pie-completed)" />
                     <Cell key="Pending" fill="url(#aurora-pie-pending)" />

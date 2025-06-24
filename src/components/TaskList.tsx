@@ -224,10 +224,14 @@ const TaskList: React.FC = () => {
         </div>
         <Button
           onClick={() => { setDialogOpen(true); setEditing(null); }}
-          className="aurora-outline-btn aurora-glow w-full md:w-56 bg-white dark:bg-zinc-800 text-black dark:text-white border-2 border-transparent bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 bg-clip-border shadow-lg hover:shadow-purple-500/25 transition-all duration-300"
+          className="w-full md:w-56 bg-white dark:bg-zinc-800 text-black dark:text-white border-2 border-transparent bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 bg-clip-border shadow-lg hover:shadow-purple-500/25 transition-all duration-300 relative overflow-hidden group"
           size="sm"
         >
-          + New Task
+          <div className="absolute inset-0 bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 opacity-100"></div>
+          <div className="absolute inset-[2px] bg-white dark:bg-zinc-800 rounded-full"></div>
+          <span className="relative z-10 bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 bg-clip-text text-transparent font-semibold">
+            + New Task
+          </span>
         </Button>
       </div>
       {/* Filters become vertical on mobile */}
