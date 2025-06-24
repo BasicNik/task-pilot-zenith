@@ -1,16 +1,17 @@
-
-import React from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
+import React, { useState } from "react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "./ui/card";
 import { useTasks } from "../hooks/useTasks";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Sector } from 'recharts';
+import { TrendingUp } from "lucide-react";
 
 const Dashboard = () => {
   const { tasks, loading } = useTasks();
+  const [activeIndex, setActiveIndex] = useState(0);
 
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
       </div>
     );
   }
@@ -44,12 +45,12 @@ const Dashboard = () => {
     { day: 'Sun', completed: tasks.filter(t => t.status === 'Completed').length * 0.27 },
   ];
 
-  // Status distribution for pie chart
+  // Status distribution for pie chart (colors from screenshot)
   const statusData = [
-    { name: 'Completed', value: taskStats.completed, color: '#10b981' },
-    { name: 'Pending', value: taskStats.pending, color: '#f59e0b' },
-    { name: 'Not Started', value: taskStats.notStarted, color: '#ef4444' },
-    { name: 'Almost Done', value: taskStats.almostDone, color: '#3b82f6' },
+    { name: 'Completed', value: taskStats.completed, color: '#22d3a5' }, // green
+    { name: 'Pending', value: taskStats.pending, color: '#ffb86b' }, // orange
+    { name: 'Not Started', value: taskStats.notStarted, color: '#6272a4' }, // blue-ish
+    { name: 'Almost Done', value: taskStats.almostDone, color: '#bd93f9' }, // purple
   ].filter(item => item.value > 0);
 
   return (
@@ -63,47 +64,47 @@ const Dashboard = () => {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-blue-900/20 dark:to-indigo-900/20 border-blue-200 dark:border-blue-800">
+        <Card className="bg-[#10162f] border border-blue-700">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-blue-700 dark:text-blue-300">Total Tasks</CardTitle>
-            <div className="h-4 w-4 text-blue-600 dark:text-blue-400">📋</div>
+            <CardTitle className="text-sm font-medium text-blue-400">Total Tasks</CardTitle>
+            <div className="h-4 w-4 text-blue-400">📋</div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-blue-800 dark:text-blue-200">{taskStats.total}</div>
-            <p className="text-xs text-blue-600 dark:text-blue-400">All your tasks</p>
+            <div className="text-2xl font-bold text-blue-300">{taskStats.total}</div>
+            <p className="text-xs text-blue-400">All your tasks</p>
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-green-50 to-emerald-100 dark:from-green-900/20 dark:to-emerald-900/20 border-green-200 dark:border-green-800">
+        <Card className="bg-[#0d1b16] border border-green-700">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-green-700 dark:text-green-300">Completed</CardTitle>
-            <div className="h-4 w-4 text-green-600 dark:text-green-400">✅</div>
+            <CardTitle className="text-sm font-medium text-green-400">Completed</CardTitle>
+            <div className="h-4 w-4 text-green-400">✅</div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-800 dark:text-green-200">{taskStats.completed}</div>
-            <p className="text-xs text-green-600 dark:text-green-400">{completionRate}% completion rate</p>
+            <div className="text-2xl font-bold text-green-300">{taskStats.completed}</div>
+            <p className="text-xs text-green-400">{completionRate}% completion rate</p>
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-orange-50 to-amber-100 dark:from-orange-900/20 dark:to-amber-900/20 border-orange-200 dark:border-orange-800">
+        <Card className="bg-[#23160f] border border-orange-700">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-orange-700 dark:text-orange-300">Pending</CardTitle>
-            <div className="h-4 w-4 text-orange-600 dark:text-orange-400">⏳</div>
+            <CardTitle className="text-sm font-medium text-orange-400">Pending</CardTitle>
+            <div className="h-4 w-4 text-orange-400">⏳</div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-orange-800 dark:text-orange-200">{taskStats.pending}</div>
-            <p className="text-xs text-orange-600 dark:text-orange-400">In progress</p>
+            <div className="text-2xl font-bold text-orange-300">{taskStats.pending}</div>
+            <p className="text-xs text-orange-400">In progress</p>
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-purple-50 to-violet-100 dark:from-purple-900/20 dark:to-violet-900/20 border-purple-200 dark:border-purple-800">
+        <Card className="bg-[#1a1430] border border-purple-700">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-purple-700 dark:text-purple-300">High Priority</CardTitle>
-            <div className="h-4 w-4 text-purple-600 dark:text-purple-400">🔥</div>
+            <CardTitle className="text-sm font-medium text-purple-400">High Priority</CardTitle>
+            <div className="h-4 w-4 text-purple-400">🔥</div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-purple-800 dark:text-purple-200">{priorityStats.high}</div>
-            <p className="text-xs text-purple-600 dark:text-purple-400">Urgent tasks</p>
+            <div className="text-2xl font-bold text-purple-300">{priorityStats.high}</div>
+            <p className="text-xs text-purple-400">Urgent tasks</p>
           </CardContent>
         </Card>
       </div>
@@ -147,55 +148,55 @@ const Dashboard = () => {
           </CardContent>
         </Card>
 
-        {/* Task Status Distribution */}
+        {/* Task Status Distribution - Donut chart with details */}
         <Card className="bg-gradient-to-br from-indigo-50 to-blue-100 dark:from-indigo-900/50 dark:to-blue-900/50 border-indigo-200 dark:border-indigo-700">
-          <CardHeader>
-            <CardTitle className="text-indigo-800 dark:text-indigo-200">Task Status</CardTitle>
-            <CardDescription className="text-indigo-600 dark:text-indigo-400">Distribution of task statuses</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="h-48 sm:h-64">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={statusData}
-                    cx="50%"
-                    cy="50%"
-                    outerRadius={60}
-                    fill="#8884d8"
-                    dataKey="value"
-                    className="drop-shadow-lg"
-                    style={{
-                      filter: 'drop-shadow(0 0 10px rgba(59, 130, 246, 0.3))'
-                    }}
-                  >
-                    {statusData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
-                  </Pie>
-                  <Tooltip 
-                    contentStyle={{ 
-                      backgroundColor: 'hsl(var(--background))', 
-                      border: '1px solid hsl(var(--border))',
-                      borderRadius: '6px',
-                      fontSize: '12px'
-                    }} 
-                  />
-                </PieChart>
-              </ResponsiveContainer>
+          <div className="flex flex-col lg:flex-row items-center justify-between w-full h-full p-4 gap-4">
+            {/* Donut Chart */}
+            <div className="flex-1 flex items-center justify-center min-w-[320px]">
+              <PieChart width={340} height={340}>
+                <Pie
+                  data={statusData}
+                  dataKey="value"
+                  nameKey="name"
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={90}
+                  outerRadius={130}
+                  strokeWidth={5}
+                  activeIndex={activeIndex}
+                  activeShape={({ outerRadius = 0, ...props }) => (
+                    <Sector {...props} outerRadius={outerRadius + 10} />
+                  )}
+                  onMouseEnter={(_, index) => setActiveIndex(index)}
+                  onMouseLeave={() => setActiveIndex(0)}
+                >
+                  {statusData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  ))}
+                </Pie>
+                <Tooltip />
+              </PieChart>
             </div>
-            <div className="flex flex-wrap justify-center gap-2 mt-4">
+            {/* Details/Legend */}
+            <div className="flex-1 flex flex-col justify-center gap-4 min-w-[220px]">
+              <div className="text-lg font-semibold mb-2 text-indigo-800 dark:text-indigo-200">Task Status Details</div>
               {statusData.map((entry, index) => (
-                <div key={index} className="flex items-center gap-1 text-xs">
-                  <div 
-                    className="w-3 h-3 rounded-full" 
-                    style={{ backgroundColor: entry.color }}
-                  ></div>
-                  <span className="text-muted-foreground">{entry.name}</span>
+                <div key={index} className="flex items-center gap-3 text-base">
+                  <div className="w-4 h-4 rounded-full" style={{ backgroundColor: entry.color }}></div>
+                  <span className="font-medium" style={{ color: entry.color }}>{entry.name}</span>
+                  <span className="ml-auto font-bold text-white/80 dark:text-white/90">{entry.value}</span>
                 </div>
               ))}
+              <div className="mt-4 flex flex-col gap-1 text-sm text-muted-foreground">
+                <div className="flex items-center gap-2 leading-none font-medium">
+                  Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+                </div>
+                <div className="leading-none">
+                  Showing current task status distribution
+                </div>
+              </div>
             </div>
-          </CardContent>
+          </div>
         </Card>
       </div>
     </div>

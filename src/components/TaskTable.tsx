@@ -63,14 +63,12 @@ const TaskTable: React.FC<TaskTableProps> = ({
               <tr
                 key={task.id}
                 className="border-b relative hover:bg-muted/60 transition cursor-pointer"
-                onClick={e => {
-                  if ((e.target as HTMLElement).closest('button, input[type="checkbox"]')) return;
-                  setDetailsTask(task);
-                }}
+                onClick={() => setDetailsTask(task)}
               >
                 <td className="px-2 md:px-3">
                   <Checkbox
                     checked={selected.includes(task.id)}
+                    onClick={e => e.stopPropagation()}
                     onCheckedChange={() => onRowCheckbox(task.id)}
                     aria-label="Select task"
                   />

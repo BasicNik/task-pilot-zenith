@@ -36,12 +36,22 @@ import {
 } from './ui/sidebar'
 import { useAuth } from '../hooks/useAuth'
 
+// Add this custom logo component at the top (after imports)
+const TaskPilotLogo = () => (
+  <img
+    src="/lovable-uploads/tick-box-task-pilot.svg"
+    alt="TaskPilot Logo"
+    className="size-10"
+    style={{ display: "block" }}
+  />
+);
+
 // Navigation data for TaskPilot
 const data = {
   teams: [
     {
       name: "TaskPilot",
-      logo: CheckSquare,
+      logo: TaskPilotLogo,
       plan: "Professional",
     },
   ],

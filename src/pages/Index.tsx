@@ -1,4 +1,3 @@
-
 import React from "react";
 import { AppSidebar } from "../components/AppSidebar";
 import {
@@ -56,63 +55,64 @@ const Index = () => {
   }
 
   return (
-    <div className="min-h-screen w-full bg-background">
+    <>
       <AuroraBanner />
-      <SidebarProvider>
-        <div className="min-h-screen flex w-full">
-          <AppSidebar />
-          <SidebarInset>
-            <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12 border-b border-border/40">
-              <div className="flex items-center gap-2 px-3 sm:px-4 w-full">
-                <SidebarTrigger className="-ml-1" />
-                <Separator orientation="vertical" className="mr-2 h-4" />
-                <Breadcrumb className="hidden sm:block">
-                  <BreadcrumbList>
-                    <BreadcrumbItem className="hidden md:block">
-                      <BreadcrumbLink href="#" onClick={() => setView("tasks")}>
-                        TaskPilot
-                      </BreadcrumbLink>
-                    </BreadcrumbItem>
-                    <BreadcrumbSeparator className="hidden md:block" />
-                    <BreadcrumbItem>
-                      <BreadcrumbPage>
-                        {view === "tasks" ? "Task Management" : "Dashboard"}
-                      </BreadcrumbPage>
-                    </BreadcrumbItem>
-                  </BreadcrumbList>
-                </Breadcrumb>
-                <div className="ml-auto flex items-center gap-1 sm:gap-2">
-                  <button
-                    onClick={() => setView("tasks")}
-                    className={`px-2 sm:px-3 py-1 rounded-md text-xs sm:text-sm font-medium transition-colors ${
-                      view === "tasks" 
-                        ? "bg-primary text-primary-foreground" 
-                        : "hover:bg-muted"
-                    }`}
-                  >
-                    Tasks
-                  </button>
-                  <button
-                    onClick={() => setView("dashboard")}
-                    className={`px-2 sm:px-3 py-1 rounded-md text-xs sm:text-sm font-medium transition-colors ${
-                      view === "dashboard" 
-                        ? "bg-primary text-primary-foreground" 
-                        : "hover:bg-muted"
-                    }`}
-                  >
-                    Dashboard
-                  </button>
+      <div className="min-h-screen w-full bg-background">
+        <SidebarProvider>
+          <div className="min-h-screen flex w-full">
+            <AppSidebar />
+            <SidebarInset>
+              <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12 border-b border-border/40">
+                <div className="flex items-center gap-2 px-3 sm:px-4 w-full">
+                  <SidebarTrigger className="-ml-1" />
+                  <Separator orientation="vertical" className="mr-2 h-4" />
+                  <Breadcrumb className="hidden sm:block">
+                    <BreadcrumbList>
+                      <BreadcrumbItem className="hidden md:block">
+                        <BreadcrumbLink href="#" onClick={() => setView("tasks")}>
+                          TaskPilot
+                        </BreadcrumbLink>
+                      </BreadcrumbItem>
+                      <BreadcrumbSeparator className="hidden md:block" />
+                      <BreadcrumbItem>
+                        <BreadcrumbPage>
+                          {view === "tasks" ? "Task Management" : "Dashboard"}
+                        </BreadcrumbPage>
+                      </BreadcrumbItem>
+                    </BreadcrumbList>
+                  </Breadcrumb>
+                  <div className="ml-auto flex items-center gap-1 sm:gap-2">
+                    <button
+                      onClick={() => setView("tasks")}
+                      className={`px-2 sm:px-3 py-1 rounded-md text-xs sm:text-sm font-medium transition-colors ${
+                        view === "tasks" 
+                          ? "bg-primary text-primary-foreground" 
+                          : "hover:bg-muted"
+                      }`}
+                    >
+                      Tasks
+                    </button>
+                    <button
+                      onClick={() => setView("dashboard")}
+                      className={`px-2 sm:px-3 py-1 rounded-md text-xs sm:text-sm font-medium transition-colors ${
+                        view === "dashboard" 
+                          ? "bg-primary text-primary-foreground" 
+                          : "hover:bg-muted"
+                      }`}
+                    >
+                      Dashboard
+                    </button>
+                  </div>
                 </div>
-              </div>
-            </header>
-            <div className="flex flex-1 flex-col gap-4 p-3 sm:p-4 pt-0">
-              {view === "tasks" && <TaskList />}
-              {view === "dashboard" && <Dashboard />}
-            </div>
-          </SidebarInset>
-        </div>
-      </SidebarProvider>
-    </div>
+              </header>
+              <main className="flex-1 p-4 sm:p-6 lg:p-8">
+                {view === "tasks" ? <TaskList /> : <Dashboard />}
+              </main>
+            </SidebarInset>
+          </div>
+        </SidebarProvider>
+      </div>
+    </>
   );
 };
 

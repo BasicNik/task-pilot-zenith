@@ -157,13 +157,19 @@ const TaskList = () => {
             onSelectAll={handleSelectAll}
             onEdit={handleEditTask}
             onDelete={handleDeleteTask}
-            onToggleComplete={async (taskId: string, completed: boolean) => {
+            onMarkComplete={async (taskId: string) => {
               const task = tasks.find(t => t.id === taskId);
               if (task) {
                 await updateTask(taskId, { 
-                  status: completed ? "Completed" : "Not Started",
-                  completedAt: completed ? new Date().toISOString() : undefined
+                  status: "Completed",
+                  completedAt: new Date().toISOString()
                 });
+              }
+            }}
+            onStar={(taskId: string) => {
+              const task = tasks.find(t => t.id === taskId);
+              if (task) {
+                updateTask(taskId, { starred: !task.starred });
               }
             }}
           />
