@@ -1,4 +1,3 @@
-
 import React from "react";
 import {
   PieChart,
@@ -76,19 +75,16 @@ const Dashboard: React.FC = () => {
   const days = Array.from({ length: 7 }).map((_, i) => {
     const d = new Date(today);
     d.setDate(today.getDate() - (6 - i)); // Last 7 days including today
-    
     // Format as dd-mm
     const label = `${String(d.getDate()).padStart(2, "0")}-${String(d.getMonth() + 1).padStart(2, "0")}`;
-    
     // Count tasks completed on this specific day
     const completedOnDay = tasks.filter((t) => {
       if (t.status !== "Completed") return false;
-      
-      // Compare just the date part (YYYY-MM-DD)
-      const taskDate = new Date(t.dueDate);
+      // Use completedAt if present, else fallback to dueDate
+      const dateStr = t.completedAt || t.dueDate;
+      const taskDate = new Date(dateStr);
       return taskDate.toDateString() === d.toDateString();
     }).length;
-    
     return { date: label, completed: completedOnDay };
   });
 

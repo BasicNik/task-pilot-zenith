@@ -10,19 +10,21 @@ import {
   orderBy, 
   serverTimestamp,
   where,
-  Timestamp
+  Timestamp,
+  getDoc
 } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import { useAuth } from './useAuth';
 import type { Task } from '../components/types';
 
 // Extended Task interface for Firestore
-export interface FirestoreTask extends Omit<Task, 'id' | 'dueDate'> {
+export interface FirestoreTask extends Omit<Task, 'id' | 'dueDate' | 'completedAt'> {
   id: string; // Firestore document ID
   dueDate: string; // ISO string
   createdAt: Timestamp;
   updatedAt: Timestamp;
   userId: string;
+  completedAt?: any; // Firestore timestamp or undefined
 }
 
 // Convert Firestore task to app task
@@ -37,6 +39,7 @@ const convertFirestoreTask = (doc: any): Task => {
     tags: data.tags || [],
     status: data.status,
     starred: data.starred || false,
+    completedAt: data.completedAt ? (typeof data.completedAt.toDate === 'function' ? data.completedAt.toDate().toISOString() : data.completedAt) : undefined,
   };
 };
 
@@ -51,6 +54,7 @@ const convertToFirestoreTask = (task: Omit<Task, 'id'>, userId: string): Omit<Fi
     status: task.status,
     starred: task.starred || false,
     userId,
+    ...(task.completedAt ? { completedAt: task.completedAt } : {}),
   };
 };
 
@@ -156,14 +160,19 @@ export const useTasks = () => {
 
     try {
       console.log(`📝 Updating task ${taskId}:`, taskData);
-      
       const taskRef = doc(db, 'tasks', user.uid, 'taskList', taskId);
-      
-      await updateDoc(taskRef, {
-        ...taskData,
-        updatedAt: serverTimestamp(),
-      });
-
+      // Fetch current task to check previous status
+      const currentDoc = await getDoc(taskRef);
+      const currentData = currentDoc.exists() ? currentDoc.data() : {};
+      let updateFields = { ...taskData, updatedAt: serverTimestamp() };
+      // Remove completedAt if present as a string
+      if ('completedAt' in updateFields && typeof updateFields.completedAt === 'string') {
+        delete updateFields.completedAt;
+      }
+      if (taskData.status === 'Completed' && currentData.status !== 'Completed') {
+        updateFields = { ...updateFields, completedAt: serverTimestamp() };
+      }
+      await updateDoc(taskRef, updateFields);
       console.log('✅ Task updated successfully');
       return true;
     } catch (error) {
@@ -228,16 +237,21 @@ export const useTasks = () => {
 
     try {
       console.log(`📝 Bulk updating ${taskIds.length} tasks:`, updates);
-      
-      const updatePromises = taskIds.map(taskId => 
-        updateDoc(doc(db, 'tasks', user.uid, 'taskList', taskId), {
-          ...updates,
-          updatedAt: serverTimestamp(),
-        })
-      );
-      
+      const updatePromises = taskIds.map(async (taskId) => {
+        const taskRef = doc(db, 'tasks', user.uid, 'taskList', taskId);
+        const currentDoc = await getDoc(taskRef);
+        const currentData = currentDoc.exists() ? currentDoc.data() : {};
+        let updateFields = { ...updates, updatedAt: serverTimestamp() };
+        // Remove completedAt if present as a string
+        if ('completedAt' in updateFields && typeof updateFields.completedAt === 'string') {
+          delete updateFields.completedAt;
+        }
+        if (updates.status === 'Completed' && currentData.status !== 'Completed') {
+          updateFields = { ...updateFields, completedAt: serverTimestamp() };
+        }
+        return updateDoc(taskRef, updateFields);
+      });
       await Promise.all(updatePromises);
-      
       console.log('✅ Bulk update completed successfully');
       return true;
     } catch (error) {

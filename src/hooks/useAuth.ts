@@ -5,7 +5,9 @@ import {
   createUserWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
-  sendPasswordResetEmail
+  sendPasswordResetEmail,
+  GoogleAuthProvider,
+  signInWithPopup
 } from 'firebase/auth';
 import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from '../lib/firebase';
@@ -345,6 +347,51 @@ export const useAuth = () => {
     }
   };
 
+  const signInWithGoogle = async () => {
+    try {
+      setError(null);
+      setLoading(true);
+      if (!isFirebaseAvailable) {
+        // Demo mode: simulate Google login
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        const demoUser = {
+          uid: 'demo-google-user-id',
+          email: 'demo@google.com',
+          displayName: 'Demo Google User',
+        } as User;
+        const demoCustomUser: CustomUser = {
+          user_id: 'demo-google-user-id',
+          username: 'Demo Google User',
+          email: 'demo@google.com',
+          role: 'user',
+          is_active: true,
+          is_verified: true,
+          created_at: new Date(),
+          last_login: new Date(),
+        };
+        setUser(demoUser);
+        setCustomUser(demoCustomUser);
+        return demoUser;
+      }
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      // Fetch or create custom user data
+      let customData = await fetchCustomUserData(user.uid);
+      if (!customData) {
+        customData = await createCustomUserData(user.uid, user.email || '', user.displayName || '');
+      }
+      setCustomUser(customData);
+      await updateLastLogin(user.uid);
+      return user;
+    } catch (error: any) {
+      setError(getErrorMessage(error.code));
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return {
     user,
     customUser,
@@ -354,6 +401,7 @@ export const useAuth = () => {
     signup,
     logout,
     resetPassword,
+    signInWithGoogle,
     isDemoMode: !isFirebaseAvailable
   };
 }; 

@@ -327,7 +327,7 @@ body, html {
   position: relative; /* For positioning the glow effect */
   border: 3px solid transparent;
   background: 
-    linear-gradient(var(--card), var(--card)) padding-box, 
+    linear-gradient(#fff, #fff) padding-box, /* Changed from var(--card) to #fff for true white */
     linear-gradient(90deg, #BC13FE 0%, #E025BE 25%, #F0459A 50%, #FB697A 75%, #FF8E5F 100%) border-box;
   color: var(--foreground);
 }
@@ -374,7 +374,7 @@ body, html {
 
 /* Glassmorphism for user dropdown (improved) */
 .glass-dropdown-profile {
-  background: rgba(255, 255, 255, 0.18) !important;
+  background: rgba(255, 255, 255, 0.959) !important;
   backdrop-filter: blur(20px) saturate(180%) !important;
   -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
   border-radius: 18px !important;
@@ -384,6 +384,23 @@ body, html {
 @media (prefers-color-scheme: dark) {
   .glass-dropdown-profile {
     background: rgba(40, 40, 60, 0.22) !important;
-    border: 1px solid rgba(255,255,255,0.14) !important;
+    border: 1px solid rgba(255, 255, 255, 0.877) !important;
+  }
+}
+
+/* Glassmorphism for task details and alert dialog (more vibrant in light mode) */
+.glass-task-details {
+  background: rgb(255, 255, 255) !important;
+  backdrop-filter: blur(18px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(180%) !important;
+  border-radius: 18px !important;
+  border: 1.5px solid rgb(255, 255, 255) !important;
+  box-shadow: 0 8px 32px 0 rgba(255, 255, 255, 0.842);
+}
+@media (prefers-color-scheme: dark) {
+  .glass-task-details {
+    background: rgba(40, 40, 60, 0.12) !important;
+    border: 1px solid rgba(255,255,255,0.10) !important;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.10);
   }
 }

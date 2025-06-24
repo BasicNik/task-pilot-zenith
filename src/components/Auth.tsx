@@ -11,6 +11,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Loader2, Mail, Lock, User, Info } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import ForgotPassword from './ForgotPassword';
+import { FcGoogle } from 'react-icons/fc';
 
 const loginSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -37,7 +38,7 @@ interface AuthProps {
 type AuthView = 'login' | 'signup' | 'forgot-password';
 
 const Auth: React.FC<AuthProps> = ({ onSuccess }) => {
-  const { login, signup, loading, error, isDemoMode, customUser } = useAuth();
+  const { login, signup, loading, error, isDemoMode, customUser, signInWithGoogle } = useAuth();
   const [activeTab, setActiveTab] = useState('login');
   const [authView, setAuthView] = useState<AuthView>('login');
 
@@ -192,6 +193,26 @@ const Auth: React.FC<AuthProps> = ({ onSuccess }) => {
                   )}
                 </Button>
               </form>
+              <div className="relative flex items-center my-4">
+                <div className="flex-grow border-t border-muted" />
+                <span className="mx-2 text-xs text-muted-foreground">or</span>
+                <div className="flex-grow border-t border-muted" />
+              </div>
+              <Button
+                type="button"
+                className="w-full flex items-center justify-center gap-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 shadow-sm hover:bg-zinc-50 dark:hover:bg-zinc-800 text-sm font-medium text-zinc-900 dark:text-zinc-100 transition-all"
+                onClick={async () => { await signInWithGoogle(); onSuccess?.(); }}
+                disabled={loading}
+              >
+                {loading ? (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  typeof FcGoogle !== 'undefined' ? <FcGoogle className="w-5 h-5" /> : (
+                    <svg className="w-5 h-5" viewBox="0 0 48 48"><g><path fill="#4285F4" d="M24 9.5c3.54 0 6.7 1.22 9.19 3.23l6.85-6.85C36.68 2.09 30.74 0 24 0 14.82 0 6.71 5.06 2.69 12.44l7.98 6.2C12.13 13.13 17.62 9.5 24 9.5z"/><path fill="#34A853" d="M46.1 24.5c0-1.64-.15-3.22-.42-4.74H24v9.01h12.42c-.54 2.9-2.18 5.36-4.64 7.01l7.19 5.6C43.93 37.13 46.1 31.3 46.1 24.5z"/><path fill="#FBBC05" d="M10.67 28.64c-1.13-3.36-1.13-6.98 0-10.34l-7.98-6.2C.89 16.09 0 19.94 0 24c0 4.06.89 7.91 2.69 11.9l7.98-6.2z"/><path fill="#EA4335" d="M24 48c6.74 0 12.68-2.22 16.98-6.05l-7.19-5.6c-2.01 1.35-4.6 2.15-7.79 2.15-6.38 0-11.87-3.63-14.33-8.89l-7.98 6.2C6.71 42.94 14.82 48 24 48z"/><path fill="none" d="M0 0h48v48H0z"/></g></svg>
+                  )
+                )}
+                Continue with Google
+              </Button>
             </TabsContent>
 
             <TabsContent value="signup" className="space-y-4">
@@ -280,10 +301,10 @@ const Auth: React.FC<AuthProps> = ({ onSuccess }) => {
                   {loading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Creating account...
+                      Signing up...
                     </>
                   ) : (
-                    'Create Account'
+                    'Sign Up'
                   )}
                 </Button>
               </form>

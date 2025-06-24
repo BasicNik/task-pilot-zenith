@@ -9,4 +9,5 @@ export type Task = {
   tags: string[];
   status: TaskStatus;
   starred?: boolean; // Added for starring tasks
+  completedAt?: string; // ISO string or undefined
 };
