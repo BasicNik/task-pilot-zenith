@@ -66,7 +66,7 @@ const Navbar: React.FC<Props> = ({ active, onNav, loggedIn, onLogout, onLoginCli
       <header className="w-full bg-background/90 backdrop-blur-sm sticky top-0 z-40 flex items-center px-4 py-2 shadow-none">
         {/* Logo - always visible */}
         <img
-          src="/lovable-uploads/cffeaf6d-aacf-45a3-a5b3-6020cb5985cd.png"
+          src="/favicon.ico"
           alt="TaskPilot Logo"
           className="h-10 md:h-12 lg:h-14 w-auto"
         />
@@ -213,7 +213,7 @@ const Navbar: React.FC<Props> = ({ active, onNav, loggedIn, onLogout, onLoginCli
             {/* Small logo in drawer */}
             <div className="flex justify-center mb-4 animate-fade-in">
               <img
-                src="/lovable-uploads/cffeaf6d-aacf-45a3-a5b3-6020cb5985cd.png"
+                src="/favicon.ico"
                 alt="TaskPilot Logo"
                 className="h-10 transition-transform duration-200 hover:scale-105"
               />

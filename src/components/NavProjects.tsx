@@ -1,4 +1,3 @@
-
 import {
   FolderOpen,
   Forward,
@@ -23,6 +22,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from './ui/sidebar'
+import { Tooltip, TooltipTrigger, TooltipContent } from './ui/tooltip'
 
 export function NavProjects({
   projects,
@@ -41,12 +41,19 @@ export function NavProjects({
       <SidebarMenu>
         {projects.map((item) => (
           <SidebarMenuItem key={item.name}>
-            <SidebarMenuButton asChild>
-              <a href={item.url}>
-                <item.icon />
-                <span>{item.name}</span>
-              </a>
-            </SidebarMenuButton>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <SidebarMenuButton asChild>
+                  <a href={item.url}>
+                    <item.icon className="w-4 h-4 mr-2 text-muted-foreground" />
+                    <span className="text-xs font-normal">{item.name}</span>
+                  </a>
+                </SidebarMenuButton>
+              </TooltipTrigger>
+              <TooltipContent side="right" align="center">
+                In development, will be live soon
+              </TooltipContent>
+            </Tooltip>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <SidebarMenuAction showOnHover>
@@ -77,10 +84,17 @@ export function NavProjects({
           </SidebarMenuItem>
         ))}
         <SidebarMenuItem>
-          <SidebarMenuButton className="text-sidebar-foreground/70">
-            <MoreHorizontal className="text-sidebar-foreground/70" />
-            <span>More</span>
-          </SidebarMenuButton>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <SidebarMenuButton className="text-sidebar-foreground/70">
+                <MoreHorizontal className="text-sidebar-foreground/70 w-4 h-4 mr-2" />
+                <span className="text-xs font-normal">More</span>
+              </SidebarMenuButton>
+            </TooltipTrigger>
+            <TooltipContent side="right" align="center">
+              In development, will be live soon
+            </TooltipContent>
+          </Tooltip>
         </SidebarMenuItem>
       </SidebarMenu>
     </SidebarGroup>

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import {
@@ -74,58 +73,55 @@ export const UserDropdown: React.FC = () => {
       </DropdownMenuTrigger>
       
       <DropdownMenuContent 
-        className="w-80 p-0" 
+        className="w-80 p-0 glass-dropdown-profile" 
         align="end" 
         forceMount
         sideOffset={8}
       >
         {/* User Profile Section */}
-        <div className="p-4 bg-muted border-b">
-          <div className="flex items-center space-x-3">
-            <Avatar className="h-12 w-12 border-2 border-primary/20">
-              {avatarUrl && !isImgBroken && (
-                <AvatarImage
-                  src={avatarUrl}
-                  alt={customUser.username || "User"}
-                  onError={() => setIsImgBroken(true)}
-                />
-              )}
-              <AvatarFallback className="bg-primary text-primary-foreground font-semibold text-lg">
-                {getInitials(customUser.username || "U")}
-              </AvatarFallback>
-            </Avatar>
-            
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center space-x-2">
-                <p className="text-sm font-semibold text-foreground truncate">
-                  {customUser.username}
-                </p>
-                {customUser.is_verified && (
-                  <Badge variant="secondary" className="text-xs px-1.5 py-0.5">
-                    ✓ Verified
-                  </Badge>
-                )}
-              </div>
-              <p className="text-xs text-muted-foreground truncate">
-                {customUser.email}
+        <div className="p-4 border-b flex items-center space-x-3">
+          <Avatar className="h-12 w-12 border-2 border-primary/20">
+            {avatarUrl && !isImgBroken && (
+              <AvatarImage
+                src={avatarUrl}
+                alt={customUser.username || "User"}
+                onError={() => setIsImgBroken(true)}
+              />
+            )}
+            <AvatarFallback className="bg-primary text-primary-foreground font-semibold text-lg">
+              {getInitials(customUser.username || "U")}
+            </AvatarFallback>
+          </Avatar>
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center space-x-2">
+              <p className="text-sm font-semibold text-foreground truncate">
+                {customUser.username}
               </p>
-              <div className="flex items-center space-x-2 mt-1">
-                <Badge 
-                  variant={customUser.is_active ? "default" : "destructive"}
-                  className="text-xs px-1.5 py-0.5"
-                >
-                  {customUser.is_active ? 'Active' : 'Inactive'}
+              {customUser.is_verified && (
+                <Badge variant="secondary" className="text-xs px-1.5 py-0.5">
+                  ✓ Verified
                 </Badge>
-                <Badge variant="outline" className="text-xs px-1.5 py-0.5">
-                  {customUser.role}
-                </Badge>
-              </div>
+              )}
+            </div>
+            <p className="text-xs text-muted-foreground truncate">
+              {customUser.email}
+            </p>
+            <div className="flex items-center space-x-2 mt-1">
+              <Badge 
+                variant={customUser.is_active ? "default" : "destructive"}
+                className="text-xs px-1.5 py-0.5"
+              >
+                {customUser.is_active ? 'Active' : 'Inactive'}
+              </Badge>
+              <Badge variant="outline" className="text-xs px-1.5 py-0.5">
+                {customUser.role}
+              </Badge>
             </div>
           </div>
         </div>
 
         {/* Menu Items */}
-        <div className="p-2 bg-popover">
+        <div className="p-2">
           <DropdownMenuLabel className="text-xs font-medium text-muted-foreground px-2 py-1.5">
             Account
           </DropdownMenuLabel>

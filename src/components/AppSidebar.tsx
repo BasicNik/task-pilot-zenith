@@ -1,4 +1,3 @@
-
 import * as React from "react"
 import {
   CheckSquare,
@@ -8,6 +7,20 @@ import {
   AppWindow,
   FolderOpen,
   Calendar,
+  ListTodo,
+  User2,
+  ShieldCheck,
+  Bell,
+  BarChart2,
+  FileText,
+  Group,
+  ClipboardList,
+  UserCheck,
+  UserPlus,
+  LayoutDashboard,
+  Layers,
+  Briefcase,
+  MoreHorizontal,
 } from "lucide-react"
 
 import { NavMain } from './NavMain'
@@ -36,58 +49,67 @@ const data = {
     {
       title: "Task Management",
       url: "#",
-      icon: CheckSquare,
+      icon: ListTodo,
       isActive: true,
       items: [
         {
           title: "All Tasks",
           url: "#",
+          icon: ClipboardList,
         },
         {
           title: "My Tasks",
           url: "#",
+          icon: User2,
         },
         {
           title: "Completed",
           url: "#",
+          icon: CheckSquare,
         },
       ],
     },
     {
       title: "Analytics",
       url: "#",
-      icon: PieChart,
+      icon: BarChart2,
       items: [
         {
           title: "Overview",
           url: "#",
+          icon: LayoutDashboard,
         },
         {
           title: "Reports",
           url: "#",
+          icon: FileText,
         },
         {
           title: "Insights",
           url: "#",
+          icon: PieChart,
         },
       ],
     },
     {
       title: "Team",
       url: "#",
-      icon: Users,
+      icon: Group,
       items: [
         {
           title: "Members",
           url: "#",
+          icon: UserCheck,
         },
         {
           title: "Permissions",
           url: "#",
+          icon: ShieldCheck,
         },
         {
           title: "Invitations",
           url: "#",
+          icon: UserPlus,
         },
       ],
     },
@@ -99,14 +121,17 @@ const data = {
         {
           title: "General",
           url: "#",
+          icon: Settings,
         },
         {
           title: "Notifications",
           url: "#",
+          icon: Bell,
         },
         {
           title: "Security",
           url: "#",
+          icon: ShieldCheck,
         },
       ],
     },
@@ -115,7 +140,7 @@ const data = {
     {
       name: "Project Planning",
       url: "#",
-      icon: AppWindow,
+      icon: Layers,
     },
     {
       name: "Team Collaboration",
@@ -125,7 +150,7 @@ const data = {
     {
       name: "Resource Management",
       url: "#",
-      icon: FolderOpen,
+      icon: Briefcase,
     },
   ],
 }
