@@ -177,7 +177,11 @@ const Auth: React.FC<AuthProps> = ({ onSuccess }) => {
                   </Button>
                 </div>
 
-                <Button type="submit" className="w-full transition-all duration-200 hover:scale-[1.02]" disabled={loading}>
+                <Button 
+                  type="submit" 
+                  className="w-full aurora-outline-btn aurora-glow bg-white dark:bg-zinc-800 text-black dark:text-white border-2 border-transparent bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 bg-clip-border shadow-lg hover:shadow-purple-500/25 transition-all duration-300" 
+                  disabled={loading}
+                >
                   {loading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -268,7 +272,11 @@ const Auth: React.FC<AuthProps> = ({ onSuccess }) => {
                   )}
                 </div>
 
-                <Button type="submit" variant="aurora-outline" size="lg" className="w-full transition-all duration-200 hover:scale-[1.02]" disabled={loading}>
+                <Button 
+                  type="submit" 
+                  className="w-full aurora-outline-btn aurora-glow bg-white dark:bg-zinc-800 text-black dark:text-white border-2 border-transparent bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 bg-clip-border shadow-lg hover:shadow-purple-500/25 transition-all duration-300" 
+                  disabled={loading}
+                >
                   {loading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -287,4 +295,4 @@ const Auth: React.FC<AuthProps> = ({ onSuccess }) => {
   );
 };
 
-export default Auth; 
+export default Auth;

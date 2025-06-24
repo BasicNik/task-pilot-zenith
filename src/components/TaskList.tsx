@@ -245,7 +245,7 @@ const TaskList: React.FC = () => {
         />
       )}
       {/* Table */}
-      <div className="w-full overflow-x-auto">
+      <div className="w-full">
         <TaskTable
           tasks={sorted}
           selected={selected}

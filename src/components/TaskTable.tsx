@@ -27,25 +27,25 @@ const TaskTable: React.FC<TaskTableProps> = ({
   onMarkComplete,
   onStar,
 }) => (
-  <div className="overflow-x-auto bg-card dark:bg-zinc-800/90 rounded-lg border max-h-[60vh] scrollbar-thin scrollbar-thumb-muted">
-    <table className="min-w-[640px] w-full text-sm md:text-base">
+  <div className="bg-card dark:bg-zinc-800/90 rounded-lg border max-h-[60vh] overflow-y-auto scrollbar-thin scrollbar-thumb-muted">
+    <table className="w-full text-sm md:text-base table-fixed">
       <thead>
         <tr className="bg-muted text-muted-foreground">
-          <th className="px-2 md:px-3 py-2 min-w-[36px] text-left">
+          <th className="px-2 md:px-3 py-2 w-10 text-left">
             <Checkbox
               checked={allChecked}
               onCheckedChange={onSelectAll}
               aria-label="Select all tasks"
             />
           </th>
-          <th className="px-2 md:px-3 py-2 min-w-[46px] text-left">Star</th>
-          <th className="px-2 md:px-4 py-2 min-w-[120px] text-left">Title</th>
-          <th className="px-2 min-w-[120px] text-left">Description</th>
-          <th className="px-2 min-w-[70px] text-left">Due</th>
-          <th className="px-2 min-w-[70px] text-left">Priority</th>
-          <th className="px-2 min-w-[65px] text-left">Tags</th>
-          <th className="px-2 min-w-[80px] text-left">Status</th>
-          <th className="px-2 min-w-[90px] w-[88px] text-left">Actions</th>
+          <th className="px-2 md:px-3 py-2 w-12 text-left">Star</th>
+          <th className="px-2 md:px-4 py-2 w-32 text-left">Title</th>
+          <th className="px-2 py-2 w-40 text-left">Description</th>
+          <th className="px-2 py-2 w-20 text-left">Due</th>
+          <th className="px-2 py-2 w-20 text-left">Priority</th>
+          <th className="px-2 py-2 w-24 text-left">Tags</th>
+          <th className="px-2 py-2 w-20 text-left">Status</th>
+          <th className="px-2 py-2 w-24 text-left">Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -78,15 +78,15 @@ const TaskTable: React.FC<TaskTableProps> = ({
                   <Star size={20} fill={task.starred ? "#facc15" : "none"} />
                 </button>
               </td>
-              <td className="px-2 md:px-4 py-2 font-semibold whitespace-nowrap">{task.title}</td>
-              <td className="px-2 whitespace-nowrap">{task.description}</td>
-              <td className="px-2 whitespace-nowrap">
+              <td className="px-2 md:px-4 py-2 font-semibold truncate">{task.title}</td>
+              <td className="px-2 py-2 truncate">{task.description}</td>
+              <td className="px-2 py-2 text-xs">
                 {new Date(task.dueDate).toLocaleDateString([], {
                   month: "short",
                   day: "numeric",
                 })}
               </td>
-              <td className="px-2 whitespace-nowrap">
+              <td className="px-2 py-2">
                 <span
                   className={`inline-block px-2 py-1 rounded text-xs font-bold ${
                     task.priority === "High"
@@ -99,48 +99,53 @@ const TaskTable: React.FC<TaskTableProps> = ({
                   {task.priority}
                 </span>
               </td>
-              <td className="px-2 whitespace-nowrap">
+              <td className="px-2 py-2">
                 <div className="flex gap-1 flex-wrap">
-                  {task.tags.map((tag) => (
+                  {task.tags.slice(0, 2).map((tag) => (
                     <span
                       key={tag}
-                      className="bg-muted px-2 py-0.5 rounded text-xs"
+                      className="bg-muted px-2 py-0.5 rounded text-xs truncate"
                     >
                       {tag}
                     </span>
                   ))}
+                  {task.tags.length > 2 && (
+                    <span className="text-xs text-muted-foreground">
+                      +{task.tags.length - 2}
+                    </span>
+                  )}
                 </div>
               </td>
-              <td className="px-2 whitespace-nowrap">
+              <td className="px-2 py-2">
                 <span
-                  className={
+                  className={`text-xs font-medium ${
                     task.status === "Completed"
-                      ? "font-medium text-green-600"
+                      ? "text-green-600"
                       : task.status === "Almost Done"
-                      ? "font-medium text-yellow-600"
+                      ? "text-yellow-600"
                       : task.status === "Pending"
-                      ? "font-medium text-blue-600"
-                      : "font-medium text-white dark:text-white"
-                  }
+                      ? "text-blue-600"
+                      : "text-foreground"
+                  }`}
                 >
                   {task.status}
                 </span>
               </td>
-              <td className="px-2 whitespace-nowrap">
+              <td className="px-2 py-2">
                 <div className="flex gap-1">
                   <button
                     title="Edit"
                     onClick={() => onEdit(task)}
                     className="p-1 rounded hover:bg-primary/20 transition"
                   >
-                    <Edit size={18} />
+                    <Edit size={16} />
                   </button>
                   <button
                     title="Delete"
                     className="p-1 rounded hover:bg-destructive/20 transition"
                     onClick={() => onDelete(task.id)}
                   >
-                    <Trash2 size={18} />
+                    <Trash2 size={16} />
                   </button>
                   {task.status === "Pending" && (
                     <button
@@ -148,7 +153,7 @@ const TaskTable: React.FC<TaskTableProps> = ({
                       className="p-1 rounded hover:bg-green-200/60 transition"
                       onClick={() => onMarkComplete(task.id)}
                     >
-                      <Check size={20} />
+                      <Check size={16} />
                     </button>
                   )}
                 </div>
