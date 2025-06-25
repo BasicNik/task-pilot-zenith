@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogFooter, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -8,7 +9,7 @@ interface Props {
   open: boolean;
   onOpenChange: (o: boolean) => void;
   onSave: (data: Omit<Task, "id">) => void;
-  editing: Task | null;
+  task: Task | undefined;
 }
 
 const PRIORITIES = ["Low", "Medium", "High"];
@@ -27,7 +28,7 @@ const statusColorMap: Record<string, string> = {
   "Almost Done": "bg-yellow-400 text-yellow-900",
 };
 
-const TaskDialog: React.FC<Props> = ({ open, onOpenChange, onSave, editing }) => {
+const TaskDialog: React.FC<Props> = ({ open, onOpenChange, onSave, task }) => {
   const [fields, setFields] = useState<Omit<Task, "id">>({
     title: "",
     description: "",
@@ -39,9 +40,9 @@ const TaskDialog: React.FC<Props> = ({ open, onOpenChange, onSave, editing }) =>
   const [tagsInput, setTagsInput] = useState("");
 
   useEffect(() => {
-    if (editing) {
-      setFields({ ...editing, dueDate: editing.dueDate.split("T")[0] });
-      setTagsInput(editing.tags.join(", "));
+    if (task) {
+      setFields({ ...task, dueDate: task.dueDate.split("T")[0] });
+      setTagsInput(task.tags.join(", "));
     } else {
       setFields({
         title: "",
@@ -53,7 +54,7 @@ const TaskDialog: React.FC<Props> = ({ open, onOpenChange, onSave, editing }) =>
       });
       setTagsInput("");
     }
-  }, [editing, open]);
+  }, [task, open]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -75,7 +76,7 @@ const TaskDialog: React.FC<Props> = ({ open, onOpenChange, onSave, editing }) =>
       <DialogContent className="max-w-lg">
         <DialogHeader>
           <DialogTitle>
-            {editing ? "Edit Task" : "Add New Task"}
+            {task ? "Edit Task" : "Add New Task"}
           </DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4 mt-2">
@@ -154,7 +155,7 @@ const TaskDialog: React.FC<Props> = ({ open, onOpenChange, onSave, editing }) =>
               type="submit"
               className="aurora-bg rounded px-4 py-2 font-medium transition-all hover:scale-105"
             >
-              {editing ? "Save Changes" : "Add Task"}
+              {task ? "Save Changes" : "Add Task"}
             </button>
           </DialogFooter>
         </form>

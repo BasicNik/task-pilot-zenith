@@ -164,14 +164,17 @@ export const useTasks = () => {
       // Fetch current task to check previous status
       const currentDoc = await getDoc(taskRef);
       const currentData = currentDoc.exists() ? currentDoc.data() : {};
-      let updateFields = { ...taskData, updatedAt: serverTimestamp() };
-      // Remove completedAt if present as a string
+      let updateFields: any = { ...taskData, updatedAt: serverTimestamp() };
+      
+      // Handle completedAt timestamp properly
       if ('completedAt' in updateFields && typeof updateFields.completedAt === 'string') {
         delete updateFields.completedAt;
       }
+      
       if (taskData.status === 'Completed' && currentData.status !== 'Completed') {
-        updateFields = { ...updateFields, completedAt: serverTimestamp() };
+        updateFields.completedAt = serverTimestamp();
       }
+      
       await updateDoc(taskRef, updateFields);
       console.log('✅ Task updated successfully');
       return true;
@@ -241,16 +244,20 @@ export const useTasks = () => {
         const taskRef = doc(db, 'tasks', user.uid, 'taskList', taskId);
         const currentDoc = await getDoc(taskRef);
         const currentData = currentDoc.exists() ? currentDoc.data() : {};
-        let updateFields = { ...updates, updatedAt: serverTimestamp() };
-        // Remove completedAt if present as a string
+        let updateFields: any = { ...updates, updatedAt: serverTimestamp() };
+        
+        // Handle completedAt timestamp properly
         if ('completedAt' in updateFields && typeof updateFields.completedAt === 'string') {
           delete updateFields.completedAt;
         }
+        
         if (updates.status === 'Completed' && currentData.status !== 'Completed') {
-          updateFields = { ...updateFields, completedAt: serverTimestamp() };
+          updateFields.completedAt = serverTimestamp();
         }
+        
         return updateDoc(taskRef, updateFields);
       });
+      
       await Promise.all(updatePromises);
       console.log('✅ Bulk update completed successfully');
       return true;
@@ -271,4 +278,4 @@ export const useTasks = () => {
     bulkDeleteTasks,
     bulkUpdateTasks,
   };
-}; 
+};

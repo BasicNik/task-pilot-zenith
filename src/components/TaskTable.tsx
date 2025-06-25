@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Edit, Trash2, Check, Star } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -7,9 +8,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 interface TaskTableProps {
   tasks: Task[];
   selected: string[];
-  onRowCheckbox: (id: string) => void;
-  onSelectAll: () => void;
-  allChecked: boolean;
+  onRowCheckbox: (id: string, selected: boolean) => void;
+  onSelectAll: (selected: boolean) => void;
   onEdit: (task: Task) => void;
   onDelete: (id: string) => void;
   onMarkComplete: (id: string) => void;
@@ -21,13 +21,13 @@ const TaskTable: React.FC<TaskTableProps> = ({
   selected,
   onRowCheckbox,
   onSelectAll,
-  allChecked,
   onEdit,
   onDelete,
   onMarkComplete,
   onStar,
 }) => {
   const [detailsTask, setDetailsTask] = useState<Task | null>(null);
+  const allChecked = tasks.length > 0 && selected.length === tasks.length;
 
   return (
     <div className="bg-card dark:bg-zinc-800/90 rounded-lg border max-h-[60vh] overflow-y-auto scrollbar-thin scrollbar-thumb-muted">
@@ -69,7 +69,7 @@ const TaskTable: React.FC<TaskTableProps> = ({
                   <Checkbox
                     checked={selected.includes(task.id)}
                     onClick={e => e.stopPropagation()}
-                    onCheckedChange={() => onRowCheckbox(task.id)}
+                    onCheckedChange={(checked) => onRowCheckbox(task.id, !!checked)}
                     aria-label="Select task"
                   />
                 </td>
