@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -324,15 +325,14 @@ body, html {
 
 /* Aurora outline button with gradient border */
 .aurora-outline-btn {
-  position: relative; /* For positioning the glow effect */
+  position: relative;
   border: 3px solid transparent;
   background: 
-    linear-gradient(#fff, #fff) padding-box, /* Changed from var(--card) to #fff for true white */
+    linear-gradient(#fff, #fff) padding-box,
     linear-gradient(90deg, #BC13FE 0%, #E025BE 25%, #F0459A 50%, #FB697A 75%, #FF8E5F 100%) border-box;
   color: var(--foreground);
 }
 
-/* Ensure hover specificity is correct for both themes */
 .aurora-outline-btn:hover {
   background: 
     linear-gradient(var(--accent), var(--accent)) padding-box, 
@@ -368,39 +368,73 @@ body, html {
   background: linear-gradient(90deg, #BC13FE 0%, #E025BE 25%, #F0459A 50%, #FB697A 75%, #FF8E5F 100%);
   z-index: -1;
   filter: blur(12px);
-  border-radius: 9999px; /* Tailwind's rounded-full */
+  border-radius: 9999px;
   opacity: 0.7;
 }
 
-/* Glassmorphism for user dropdown (improved) */
+/* Story link with underline animation */
+.story-link {
+  position: relative;
+  display: inline-block;
+}
+
+.story-link::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background: var(--aurora-gradient);
+  transform-origin: bottom right;
+  transition: transform 0.3s ease-out;
+}
+
+.story-link:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+/* Consistent glassmorphism effects */
 .glass-dropdown-profile {
-  background: rgba(255, 255, 255, 0.959) !important;
+  background: rgba(255, 255, 255, 0.95) !important;
   backdrop-filter: blur(20px) saturate(180%) !important;
   -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
   border-radius: 18px !important;
   border: 1px solid rgba(255, 255, 255, 0.22) !important;
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.10);
 }
-@media (prefers-color-scheme: dark) {
-  .glass-dropdown-profile {
-    background: rgba(40, 40, 60, 0.22) !important;
-    border: 1px solid rgba(255, 255, 255, 0.877) !important;
-  }
+
+.dark .glass-dropdown-profile {
+  background: rgba(40, 40, 60, 0.95) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
 }
 
-/* Glassmorphism for task details and alert dialog (more vibrant in light mode) */
 .glass-task-details {
-  background: rgb(255, 255, 255) !important;
+  background: rgba(255, 255, 255, 0.95) !important;
   backdrop-filter: blur(18px) saturate(180%) !important;
   -webkit-backdrop-filter: blur(18px) saturate(180%) !important;
   border-radius: 18px !important;
-  border: 1.5px solid rgb(255, 255, 255) !important;
-  box-shadow: 0 8px 32px 0 rgba(255, 255, 255, 0.842);
+  border: 1.5px solid rgba(255, 255, 255, 0.3) !important;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.10);
 }
-@media (prefers-color-scheme: dark) {
-  .glass-task-details {
-    background: rgba(40, 40, 60, 0.12) !important;
-    border: 1px solid rgba(255,255,255,0.10) !important;
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.10);
-  }
+
+.dark .glass-task-details {
+  background: rgba(40, 40, 60, 0.95) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+/* Consistent glass effect for all modals and dropdowns */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.22) !important;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.10);
+}
+
+.dark .glass-effect {
+  background: rgba(40, 40, 60, 0.95) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
 }
