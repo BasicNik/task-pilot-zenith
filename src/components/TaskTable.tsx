@@ -62,11 +62,13 @@ const TaskTable: React.FC<TaskTableProps> = ({
             tasks.map((task) => (
               <tr
                 key={task.id}
-                className="border-b relative hover:bg-muted/60 transition"
+                className="border-b relative hover:bg-muted/60 transition cursor-pointer"
+                onClick={() => setDetailsTask(task)}
               >
                 <td className="px-2 md:px-3">
                   <Checkbox
                     checked={selected.includes(task.id)}
+                    onClick={e => e.stopPropagation()}
                     onCheckedChange={(checked) => onRowCheckbox(task.id, !!checked)}
                     aria-label="Select task"
                   />
@@ -74,21 +76,17 @@ const TaskTable: React.FC<TaskTableProps> = ({
                 <td className="px-2 md:px-3">
                   <button
                     title={task.starred ? "Unstar" : "Star"}
-                    onClick={() => onStar(task.id)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onStar(task.id);
+                    }}
                     className={`rounded p-0.5 ${task.starred ? "text-yellow-400" : "text-gray-400 hover:text-yellow-500"}`}
                     aria-label="Star Task"
                   >
                     <Star size={20} fill={task.starred ? "#facc15" : "none"} />
                   </button>
                 </td>
-                <td className="px-2 md:px-4 py-2 font-semibold">
-                  <span 
-                    onClick={() => setDetailsTask(task)}
-                    className="story-link cursor-pointer truncate block"
-                  >
-                    {task.title}
-                  </span>
-                </td>
+                <td className="px-2 md:px-4 py-2 font-semibold truncate">{task.title}</td>
                 <td className="px-2 py-2 truncate">{task.description}</td>
                 <td className="px-2 py-2 text-xs">
                   {new Date(task.dueDate).toLocaleDateString([], {
@@ -145,7 +143,10 @@ const TaskTable: React.FC<TaskTableProps> = ({
                   <div className="flex gap-1">
                     <button
                       title="Edit"
-                      onClick={() => onEdit(task)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onEdit(task);
+                      }}
                       className="p-1 rounded hover:bg-primary/20 transition"
                     >
                       <Edit size={16} />
@@ -153,7 +154,10 @@ const TaskTable: React.FC<TaskTableProps> = ({
                     <button
                       title="Delete"
                       className="p-1 rounded hover:bg-destructive/20 transition"
-                      onClick={() => onDelete(task.id)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onDelete(task.id);
+                      }}
                     >
                       <Trash2 size={16} />
                     </button>
@@ -161,7 +165,10 @@ const TaskTable: React.FC<TaskTableProps> = ({
                       <button
                         title="Mark as Complete"
                         className="p-1 rounded hover:bg-green-200/60 transition"
-                        onClick={() => onMarkComplete(task.id)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onMarkComplete(task.id);
+                        }}
                       >
                         <Check size={16} />
                       </button>
